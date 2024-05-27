@@ -1,20 +1,38 @@
+// main.dart
+
 import 'package:flutter/material.dart';
+import 'package:pencil_flutter/api/api_client.dart';
+import 'package:pencil_flutter/api/api_service.dart';
+import 'package:pencil_flutter/providers/tree_model_provider.dart';
+import 'package:pencil_flutter/repository/data_repository.dart';
 import 'package:pencil_flutter/ui/dev.dart';
+import 'package:pencil_flutter/ui/home_screen.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MainApp());
+  final ApiClient apiClient = ApiClient(baseUrl: "https://pencil.golery.com");
+  final ApiService apiService = ApiService(apiClient: apiClient);
+  final DataRepository dataRepository = DataRepository(apiService: apiService);
+
+  runApp(MyApp(dataRepository: dataRepository));
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class MyApp extends StatelessWidget {
+  final DataRepository dataRepository;
+
+  MyApp({required this.dataRepository});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: DevWidget(),
-        ),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+            create: (context) => DataProvider(dataRepository: dataRepository)),
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        // home: DevWidget(), // HomeScreen(),
+        home: HomeScreen(),
       ),
     );
   }
