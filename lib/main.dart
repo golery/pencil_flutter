@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
                   DataProvider(dataRepository: dataRepository)),
         ],
         child: MaterialApp(
-          title: 'Flutter Demo',
+          title: 'Pencil',
           home: Scaffold(
             body: SafeArea(
               child: IS_WIDGET_DEV ? DevWidget() : HomeScreen(),
