@@ -27,14 +27,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-            create: (context) => DataProvider(dataRepository: dataRepository)),
-      ],
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        home: IS_WIDGET_DEV ? DevWidget() : HomeScreen(),
-      ),
-    );
+        providers: [
+          ChangeNotifierProvider(
+              create: (context) =>
+                  DataProvider(dataRepository: dataRepository)),
+        ],
+        child: MaterialApp(
+          title: 'Flutter Demo',
+          home: Scaffold(
+            body: SafeArea(
+              child: IS_WIDGET_DEV ? DevWidget() : HomeScreen(),
+            ),
+          ),
+        ));
   }
 }
