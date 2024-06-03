@@ -9,14 +9,45 @@ class NodeViewer extends StatefulWidget {
 }
 
 class _NodeViewerState extends State<NodeViewer> {
-  late final WebViewController _controller;
+  String getHtml() {
+    return '''
+    <!DOCTYPE html>
+    <html lang="en">
 
-  @override
-  void initState() {
-    super.initState();
-    _controller = WebViewController()
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <meta name="description" content="Full-height webpage with no zoom on mobile devices">
+        <title>Full-Height Webpage</title>
+        <style>
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+                overflow: hidden;
+            }
+
+            body {
+                display: flex;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1>Welcome to the Full-Height Webpage</h1>
+    </body>
+
+    </html>
+    ''';
+  }
+
+  WebViewController? _controller;
+
+  Future<void> _load() async {
+    var controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(const Color(0x00000000))
+      // ..setBackgroundColor(const Color(0x00000000))
       ..setNavigationDelegate(
         NavigationDelegate(
           onProgress: (int progress) {
@@ -24,7 +55,8 @@ class _NodeViewerState extends State<NodeViewer> {
           },
           onPageStarted: (String url) {},
           onPageFinished: (String url) {
-            _controller.runJavaScript("alert('help2')");
+            // _controller?.runJavaScript(
+            //     "window.SET_EDITOR_PROPS('Something here123');  ");
           },
           onHttpError: (HttpResponseError error) {},
           onWebResourceError: (WebResourceError error) {},
@@ -35,12 +67,69 @@ class _NodeViewerState extends State<NodeViewer> {
             return NavigationDecision.navigate;
           },
         ),
-      )
-      ..loadFlutterAsset('assets/webview/index.html');
+      );
+    // await controller.loadFlutterAsset('assets/webview/index.html');
+    await controller.loadHtmlString(getHtml());
+    await controller.enableZoom(false);
+
+    setState(() {
+      _controller = controller;
+    });
+  }
+
+  Future<void> _reload() async {
+    print('a');
+    await _controller?.loadHtmlString(getHtml());
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
   }
 
   @override
   Widget build(BuildContext context) {
-    return WebViewWidget(controller: _controller);
+    if (_controller == null) {
+      return Text('Loading');
+    }
+
+    return Column(
+      children: [
+        ElevatedButton(
+          onPressed: () {
+            // _controller?.runJavaScript(
+            //     "window.SET_EDITOR_PROPS('Something here123');  ");
+            _load();
+          },
+          child: Text('Run JavaScript'),
+        ),
+        Container(
+          width: 300,
+          height: 500,
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Colors.blue,
+              width: 2.0,
+            ),
+          ),
+          child: SizedBox(
+            width: 200,
+            height: 200,
+            child: WebViewWidget(
+              controller: _controller!,
+            ),
+          ),
+        ),
+        ElevatedButton(
+          onPressed: () => _load(),
+          child: Text('Run JavaScript222'),
+        ),
+        ElevatedButton(
+          onPressed: () => _reload(),
+          child: Text('Reload'),
+        ),
+      ],
+    );
   }
 }

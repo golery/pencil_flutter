@@ -17,6 +17,8 @@ void main() {
   runApp(MyApp(dataRepository: dataRepository));
 }
 
+const IS_WIDGET_DEV = true;
+
 class MyApp extends StatelessWidget {
   final DataRepository dataRepository;
 
@@ -31,8 +33,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
-        // home: DevWidget(), // HomeScreen(),
-        home: HomeScreen(),
+        home: IS_WIDGET_DEV ? DevWidget() : HomeScreen(),
       ),
     );
   }
