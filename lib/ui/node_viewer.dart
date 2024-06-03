@@ -17,8 +17,6 @@ class _NodeViewerState extends State<NodeViewer> {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-        <meta name="description" content="Full-height webpage with no zoom on mobile devices">
-        <title>Full-Height Webpage</title>
         <style>
             html,
             body {
@@ -30,12 +28,14 @@ class _NodeViewerState extends State<NodeViewer> {
 
             body {
                 display: flex;
+                flex-direction: column;
             }
         </style>
     </head>
 
     <body>
         <h1>Welcome to the Full-Height Webpage</h1>
+        <button onClick="FlutterEditorChannel.postMessage('Hello')">Post message</message>
     </body>
 
     </html>
@@ -47,7 +47,12 @@ class _NodeViewerState extends State<NodeViewer> {
   Future<void> _load() async {
     var controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      // ..setBackgroundColor(const Color(0x00000000))
+      ..addJavaScriptChannel(
+        'FlutterEditorChannel',
+        onMessageReceived: (JavaScriptMessage message) {
+          print(message.message);
+        },
+      )
       ..setNavigationDelegate(
         NavigationDelegate(
           onProgress: (int progress) {
