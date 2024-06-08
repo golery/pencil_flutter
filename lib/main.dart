@@ -5,7 +5,7 @@ import 'package:pencil_flutter/api/api_client.dart';
 import 'package:pencil_flutter/api/api_service.dart';
 import 'package:pencil_flutter/providers/tree_model_provider.dart';
 import 'package:pencil_flutter/repository/data_repository.dart';
-import 'package:pencil_flutter/ui/dev.dart';
+import 'package:pencil_flutter/dev/dev.dart';
 import 'package:pencil_flutter/ui/home_screen.dart';
 import 'package:provider/provider.dart';
 
