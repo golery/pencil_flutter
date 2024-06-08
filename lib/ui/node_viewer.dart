@@ -22,36 +22,34 @@ class _NodeViewerState extends State<NodeViewer> {
         body {
             margin: 0;
             padding: 0;
-            height: 100%;
+            height: 100vh;
+            width: 100vw;
             overflow: hidden;
             display: flex;
+            align-items: stretch;
+            justify-content: stretch;
         }
 
-        body {
+        .root {
             display: flex;
+            flex-grow: 1;
+            border: 1px solid red;
             flex-direction: column;
         }
 
-        .main {
+        .scroll {
             flex-grow: 1;
             overflow-y: scroll;
             border: 1px solid green;
-        }
-
-        .inner {
-            display: flex;
-            height: 100%%;
-            border: 1px solid red;
-            flex-direction: column;
         }
     </style>
 </head>
 
 <body>
-    <div class="inner">
+    <div class="root">
         <h1>Welcome to the Full-Height Webpage</h1>
         <button onClick="FlutterEditorChannel.postMessage('Hello')">Post message</button>
-        <div class="main">
+        <div class="scroll">
             <h2>Welcome to the Full-Height Webpage323</h2>
             <h2>Welcome to the Full-Height Webpage323</h2>
             <h2>Welcome to the Full-Height Webpage323</h2>
