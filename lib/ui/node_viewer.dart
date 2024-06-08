@@ -40,7 +40,7 @@ class _NodeViewerState extends State<NodeViewer> {
 
         .inner {
             display: flex;
-            height: 80%;
+            height: 100%%;
             border: 1px solid red;
             flex-direction: column;
         }
