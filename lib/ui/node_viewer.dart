@@ -23,7 +23,6 @@ class _NodeViewerState extends State<NodeViewer> {
                 margin: 0;
                 padding: 0;
                 height: 100%;
-                overflow: hidden;
             }
 
             body {
@@ -35,7 +34,28 @@ class _NodeViewerState extends State<NodeViewer> {
 
     <body>
         <h1>Welcome to the Full-Height Webpage</h1>
-        <button onClick="FlutterEditorChannel.postMessage('Hello')">Post message</message>
+        <button onClick="FlutterEditorChannel.postMessage('Hello')">Post message</button>
+        <h2>Welcome to the Full-Height Webpage323</h2>
+        <h2>Welcome to the Full-Height Webpage323</h2>
+        <h2>Welcome to the Full-Height Webpage323</h2>
+        <h2>Welcome to the Full-Height Webpage323</h2>
+        <h2>Welcome to the Full-Height Webpage323</h2>
+        <h2>Welcome to the Full-Height Webpage323</h2>
+        <h2>Welcome to the Full-Height Webpage323</h2>
+        <h2>Welcome to the Full-Height Webpage323</h2>
+        <h2>Welcome to the Full-Height Webpage323</h2>
+        <h2>Welcome to the Full-Height Webpage323</h2>
+        <h2>Welcome to the Full-Height Webpage323</h2>
+        <h2>Welcome to the Full-Height Webpage323</h2>
+        <h2>Welcome to the Full-Height aaaa</h2>
+        <h2>Welcome to the Full-Height bbb</h2>
+        <h2>Welcome to the Full-Height Webpage323</h2>
+        <h2>Welcome to the Full-Height Webpage323</h2>
+        <h2>Welcome to the Full-Height Webpage323</h2>
+        <h2>Welcome to the Full-Height Webpage323</h2>
+        <h2>Welcome to the Full-Height Webpage323</h2>
+        <h2>Welcome to the Full-Height ccc</h2>
+        <h2>Welcome to the Full-Height Webpage323</h2>
     </body>
 
     </html>
@@ -101,16 +121,8 @@ class _NodeViewerState extends State<NodeViewer> {
 
     return Column(
       children: [
-        ElevatedButton(
-          onPressed: () {
-            // _controller?.runJavaScript(
-            //     "window.SET_EDITOR_PROPS('Something here123');  ");
-            _load();
-          },
-          child: Text('Run JavaScript'),
-        ),
-        Container(
-          width: 300,
+        Expanded(
+            child: Container(
           height: 500,
           decoration: BoxDecoration(
             border: Border.all(
@@ -119,20 +131,27 @@ class _NodeViewerState extends State<NodeViewer> {
             ),
           ),
           child: SizedBox(
-            width: 200,
-            height: 200,
             child: WebViewWidget(
               controller: _controller!,
             ),
           ),
-        ),
-        ElevatedButton(
-          onPressed: () => _load(),
-          child: Text('Run JavaScript222'),
-        ),
-        ElevatedButton(
-          onPressed: () => _reload(),
-          child: Text('Reload'),
+        )),
+        Row(
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                // _controller?.runJavaScript(
+                //     "window.SET_EDITOR_PROPS('Something here123');  ");
+                _load();
+              },
+              child: Text('Run JavaScript'),
+            ),
+            SizedBox(width: 10),
+            ElevatedButton(
+              onPressed: () => _reload(),
+              child: Text('Reload'),
+            ),
+          ],
         ),
       ],
     );
