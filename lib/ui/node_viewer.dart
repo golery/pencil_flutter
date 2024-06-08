@@ -11,54 +11,72 @@ class NodeViewer extends StatefulWidget {
 class _NodeViewerState extends State<NodeViewer> {
   String getHtml() {
     return '''
-    <!DOCTYPE html>
-    <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-        <style>
-            html,
-            body {
-                margin: 0;
-                padding: 0;
-                height: 100%;
-            }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+        }
 
-            body {
-                display: flex;
-                flex-direction: column;
-            }
-        </style>
-    </head>
+        body {
+            display: flex;
+            flex-direction: column;
+        }
 
-    <body>
+        .main {
+            flex-grow: 1;
+            overflow-y: scroll;
+            border: 1px solid green;
+        }
+
+        .inner {
+            display: flex;
+            height: 80%;
+            border: 1px solid red;
+            flex-direction: column;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="inner">
         <h1>Welcome to the Full-Height Webpage</h1>
         <button onClick="FlutterEditorChannel.postMessage('Hello')">Post message</button>
-        <h2>Welcome to the Full-Height Webpage323</h2>
-        <h2>Welcome to the Full-Height Webpage323</h2>
-        <h2>Welcome to the Full-Height Webpage323</h2>
-        <h2>Welcome to the Full-Height Webpage323</h2>
-        <h2>Welcome to the Full-Height Webpage323</h2>
-        <h2>Welcome to the Full-Height Webpage323</h2>
-        <h2>Welcome to the Full-Height Webpage323</h2>
-        <h2>Welcome to the Full-Height Webpage323</h2>
-        <h2>Welcome to the Full-Height Webpage323</h2>
-        <h2>Welcome to the Full-Height Webpage323</h2>
-        <h2>Welcome to the Full-Height Webpage323</h2>
-        <h2>Welcome to the Full-Height Webpage323</h2>
-        <h2>Welcome to the Full-Height aaaa</h2>
-        <h2>Welcome to the Full-Height bbb</h2>
-        <h2>Welcome to the Full-Height Webpage323</h2>
-        <h2>Welcome to the Full-Height Webpage323</h2>
-        <h2>Welcome to the Full-Height Webpage323</h2>
-        <h2>Welcome to the Full-Height Webpage323</h2>
-        <h2>Welcome to the Full-Height Webpage323</h2>
-        <h2>Welcome to the Full-Height ccc</h2>
-        <h2>Welcome to the Full-Height Webpage323</h2>
-    </body>
+        <div class="main">
+            <h2>Welcome to the Full-Height Webpage323</h2>
+            <h2>Welcome to the Full-Height Webpage323</h2>
+            <h2>Welcome to the Full-Height Webpage323</h2>
+            <h2>Welcome to the Full-Height Webpage323</h2>
+            <h2>Welcome to the Full-Height Webpage323</h2>
+            <h2>Welcome to the Full-Height Webpage323</h2>
+            <h2>Welcome to the Full-Height Webpage323</h2>
+            <h2>Welcome to the Full-Height Webpage323</h2>
+            <h2>Welcome to the Full-Height Webpage323</h2>
+            <h2>Welcome to the Full-Height Webpage323</h2>
+            <h2>Welcome to the Full-Height Webpage323</h2>
+            <h2>Welcome to the Full-Height Webpage323</h2>
 
-    </html>
+            <h2>Welcome to the Full-Height Webpage323</h2>
+            <h2>Welcome to the Full-Height Webpage323</h2>
+            <h2>Welcome to the Full-Height Webpage323</h2>
+            <h2>Welcome to the Full-Height Webpage323</h2>
+            <h2>Welcome to the Full-Height Webpage323</h2>
+            <h2>Welcome to the Full-Height Webpage323</h2>
+        </div>
+        <h1>END</h1>
+    </div>
+</body>
+
+</html>
     ''';
   }
 
@@ -95,6 +113,7 @@ class _NodeViewerState extends State<NodeViewer> {
       );
     // await controller.loadFlutterAsset('assets/webview/index.html');
     await controller.loadHtmlString(getHtml());
+    // await controller.loadRequest(Uri.parse('https://flutter.dev'));
     await controller.enableZoom(false);
 
     setState(() {

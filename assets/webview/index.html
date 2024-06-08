@@ -4,8 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta name="description" content="Full-height webpage with no zoom on mobile devices">
-    <title>Full-Height Webpage</title>
     <style>
         html,
         body {
@@ -13,21 +11,56 @@
             padding: 0;
             height: 100%;
             overflow: hidden;
+            display: flex;
         }
 
         body {
             display: flex;
+            flex-direction: column;
         }
 
-        h1 {
-            font-size: 2em;
-            color: #333;
+        .main {
+            flex-grow: 1;
+            overflow-y: scroll;
+            border: 1px solid green;
+        }
+
+        .inner {
+            display: flex;
+            height: 80%;
+            border: 1px solid red;
+            flex-direction: column;
         }
     </style>
 </head>
 
 <body>
-    <h1>Welcome to the Full-Height Webpage</h1>
+    <div class="inner">
+        <h1>Welcome to the Full-Height Webpage</h1>
+        <button onClick="FlutterEditorChannel.postMessage('Hello')">Post message</button>
+        <div class="main">
+            <h2>Welcome to the Full-Height Webpage323</h2>
+            <h2>Welcome to the Full-Height Webpage323</h2>
+            <h2>Welcome to the Full-Height Webpage323</h2>
+            <h2>Welcome to the Full-Height Webpage323</h2>
+            <h2>Welcome to the Full-Height Webpage323</h2>
+            <h2>Welcome to the Full-Height Webpage323</h2>
+            <h2>Welcome to the Full-Height Webpage323</h2>
+            <h2>Welcome to the Full-Height Webpage323</h2>
+            <h2>Welcome to the Full-Height Webpage323</h2>
+            <h2>Welcome to the Full-Height Webpage323</h2>
+            <h2>Welcome to the Full-Height Webpage323</h2>
+            <h2>Welcome to the Full-Height Webpage323</h2>
+
+            <h2>Welcome to the Full-Height Webpage323</h2>
+            <h2>Welcome to the Full-Height Webpage323</h2>
+            <h2>Welcome to the Full-Height Webpage323</h2>
+            <h2>Welcome to the Full-Height Webpage323</h2>
+            <h2>Welcome to the Full-Height Webpage323</h2>
+            <h2>Welcome to the Full-Height Webpage323</h2>
+        </div>
+        <h1>END</h1>
+    </div>
 </body>
 
 </html>
