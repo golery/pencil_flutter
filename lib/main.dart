@@ -17,7 +17,7 @@ void main() {
   runApp(MyApp(dataRepository: dataRepository));
 }
 
-const IS_WIDGET_DEV = false;
+const IS_WIDGET_DEV = true;
 
 class MyApp extends StatelessWidget {
   final DataRepository dataRepository;

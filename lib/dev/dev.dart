@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pencil_flutter/dev/node_viewer.dart';
+import 'package:pencil_flutter/dev/dev_resuse_webview.dart';
 
 class DevWidget extends StatelessWidget {
   const DevWidget({Key? key}) : super(key: key);
@@ -7,7 +7,7 @@ class DevWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: DevWebView(),
+      child: DevScreen(),
     );
   }
 }
