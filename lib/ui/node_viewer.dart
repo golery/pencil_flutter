@@ -13,7 +13,58 @@ class NodeViewer extends StatefulWidget {
   NodeViewerState createState() => NodeViewerState();
 }
 
-class HtmlCache {
+class NodeViewerState extends State<NodeViewer> {
+  WebViewController? _controller;
+
+  Future<void> _load() async {
+    var load = await WebViewCache.loadController(widget.node);
+
+    setState(() {
+      _controller = load;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = WebViewCache.getController();
+    if (_controller == null) {
+      _load();
+    } else {
+      _controller?.runJavaScript(
+          "window.updateEditor({ node: ${jsonEncode(widget.node.toJson())}, edit: true});");
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_controller == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    return Column(
+      children: [
+        Expanded(
+          child: WebViewWidget(
+            controller: _controller!,
+          ),
+        ),
+        Row(children: [
+          ElevatedButton(
+            onPressed: () {
+              // _controller?.runJavaScript(
+              //     "window.SET_EDITOR_PROPS('Something here123');  ");
+              _load();
+            },
+            child: Text('Run JavaScript'),
+          )
+        ]),
+      ],
+    );
+  }
+}
+
+class WebViewCache {
   static String? _htmlContent;
   static WebViewController? _controller;
 
@@ -59,60 +110,9 @@ class HtmlCache {
           ),
         );
       await _controller!.enableZoom(false);
-      await _controller!.loadHtmlString(await HtmlCache.loadHtml());
+      await _controller!.loadHtmlString(await WebViewCache.loadHtml());
       _htmlContent = await rootBundle.loadString('assets/webview/index.html');
     }
     return _controller!;
-  }
-}
-
-class NodeViewerState extends State<NodeViewer> {
-  WebViewController? _controller;
-
-  Future<void> _load() async {
-    var load = await HtmlCache.loadController(widget.node);
-
-    setState(() {
-      _controller = load;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = HtmlCache.getController();
-    if (_controller == null) {
-      _load();
-    } else {
-      _controller?.runJavaScript(
-          "window.updateEditor({ node: ${jsonEncode(widget.node.toJson())}, edit: true});");
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (_controller == null) {
-      return Text('Loading');
-    }
-
-    return Column(
-      children: [
-        Expanded(
-          child: WebViewWidget(
-            controller: _controller!,
-          ),
-        ),
-        Row(children: [
-          ElevatedButton(
-            onPressed: () {
-              // _controller?.runJavaScript(
-              //     "window.SET_EDITOR_PROPS('Something here123');  ");
-              _load();
-            },
-            child: Text('Run JavaScript'),
-          )
-        ]),
-      ],
-    );
   }
 }
