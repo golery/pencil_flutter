@@ -37,22 +37,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget getBody(DataProvider dataProvider) {
     return Column(
       children: [
-        Visibility(
-            visible: _showNodeViewer,
-            // child: _node == null
-            //     ? const Text('Loading')
-            //     : NodeViewer(node: _node!)),
-            child: const Text('Loaind')),
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ElevatedButton(
-            onPressed: () {
-              dataProvider.fetchData();
-              setState(() {});
-            },
-            child: Text('Add Data'),
-          ),
-        ),
         Expanded(
           child: ListView.separated(
             itemCount: dataProvider.treeListItems.length,
@@ -81,7 +65,10 @@ class _HomeScreenState extends State<HomeScreen> {
         } else {
           return Scaffold(
             appBar: AppBar(
-              title: Text(dataProvider.book?.name ?? ''),
+              title: ElevatedButton(
+                onPressed: () {},
+                child: Text(dataProvider.book?.name ?? ''),
+              ),
             ),
             body: getBody(dataProvider),
             floatingActionButton: FloatingActionButton(
