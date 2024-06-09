@@ -15,12 +15,56 @@ class NodeViewer extends StatefulWidget {
 
 class HtmlCache {
   static String? _htmlContent;
+  static WebViewController? _controller;
 
   static Future<String> loadHtml() async {
     if (_htmlContent == null) {
       _htmlContent = await rootBundle.loadString('assets/webview/index.html');
+      _htmlContent = _htmlContent!.replaceAll(
+          '<div id="root"></div>', '<div>4444</div><div id="root"></div>');
     }
     return _htmlContent!;
+  }
+
+  static WebViewController? getController() {
+    return _controller;
+  }
+
+  static Future<WebViewController> loadController(Node node) async {
+    if (_controller == null) {
+      _controller = WebViewController()
+        ..setJavaScriptMode(JavaScriptMode.unrestricted)
+        ..addJavaScriptChannel(
+          'FlutterEditorChannel',
+          onMessageReceived: (JavaScriptMessage message) {
+            print(message.message);
+          },
+        )
+        ..setNavigationDelegate(
+          NavigationDelegate(
+            onProgress: (int progress) {
+              // Update loading bar.
+            },
+            onPageStarted: (String url) {},
+            onPageFinished: (String url) {
+              _controller?.runJavaScript(
+                  "window.updateEditor({ node: ${jsonEncode(node.toJson())}, edit: true});");
+            },
+            onHttpError: (HttpResponseError error) {},
+            onWebResourceError: (WebResourceError error) {},
+            onNavigationRequest: (NavigationRequest request) {
+              if (request.url.startsWith('https://www.youtube.com/')) {
+                return NavigationDecision.prevent;
+              }
+              return NavigationDecision.navigate;
+            },
+          ),
+        );
+      await _controller!.enableZoom(false);
+      await _controller!.loadHtmlString(await HtmlCache.loadHtml());
+      _htmlContent = await rootBundle.loadString('assets/webview/index.html');
+    }
+    return _controller!;
   }
 }
 
@@ -28,43 +72,10 @@ class NodeViewerState extends State<NodeViewer> {
   WebViewController? _controller;
 
   Future<void> _load() async {
-    var controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..addJavaScriptChannel(
-        'FlutterEditorChannel',
-        onMessageReceived: (JavaScriptMessage message) {
-          print(message.message);
-        },
-      )
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onProgress: (int progress) {
-            // Update loading bar.
-          },
-          onPageStarted: (String url) {},
-          onPageFinished: (String url) {
-            _controller?.runJavaScript(
-                "window.updateEditor({ node: ${jsonEncode(widget.node.toJson())}, edit: true});");
-          },
-          onHttpError: (HttpResponseError error) {},
-          onWebResourceError: (WebResourceError error) {},
-          onNavigationRequest: (NavigationRequest request) {
-            if (request.url.startsWith('https://www.youtube.com/')) {
-              return NavigationDecision.prevent;
-            }
-            return NavigationDecision.navigate;
-          },
-        ),
-      );
-    await controller.enableZoom(false);
-    await controller.loadHtmlString(await HtmlCache.loadHtml());
-
-    // await controller.loadFlutterAsset('assets/webview/index.html');
-    // await controller.loadHtmlString(getHtml());
-    // await controller.loadRequest(Uri.parse('https://flutter.dev'));
+    var load = await HtmlCache.loadController(widget.node);
 
     setState(() {
-      _controller = controller;
+      _controller = load;
     });
   }
 
@@ -76,7 +87,13 @@ class NodeViewerState extends State<NodeViewer> {
   @override
   void initState() {
     super.initState();
-    _load();
+    _controller = HtmlCache.getController();
+    if (_controller == null) {
+      _load();
+    } else {
+      _controller?.runJavaScript(
+          "window.updateEditor({ node: ${jsonEncode(widget.node.toJson())}, edit: true});");
+    }
   }
 
   @override
