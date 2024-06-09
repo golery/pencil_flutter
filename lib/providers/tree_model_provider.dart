@@ -103,4 +103,8 @@ class DataProvider with ChangeNotifier {
     final title = node.title ?? node.name ?? '-';
     return TreeListItem(node.id, level, title, isOpen);
   }
+
+  Node? findNodeById(NodeId nodeId) {
+    return _nodeIdToNode[nodeId];
+  }
 }

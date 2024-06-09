@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class NodeViewer extends StatefulWidget {
-  const NodeViewer({Key? key}) : super(key: key);
+class DevWebView extends StatefulWidget {
+  const DevWebView({Key? key}) : super(key: key);
 
   @override
   _NodeViewerState createState() => _NodeViewerState();
 }
 
-class _NodeViewerState extends State<NodeViewer> {
+class _NodeViewerState extends State<DevWebView> {
   String getHtml() {
     return '''
 <!DOCTYPE html>

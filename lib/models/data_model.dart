@@ -90,6 +90,16 @@ class Node {
       rethrow;
     }
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'text': text,
+      'title': title,
+      'children': children,
+    };
+  }
 }
 
 class TreeListItem {

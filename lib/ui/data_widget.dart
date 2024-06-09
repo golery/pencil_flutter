@@ -35,12 +35,18 @@ class DataWidget extends StatelessWidget {
       ),
       title: GestureDetector(
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => NodeViewer(key: ValueKey(listItem.nodeId)),
-            ),
-          );
+          final treeModel = Provider.of<DataProvider>(context, listen: false);
+          final node = treeModel.findNodeById(listItem.nodeId);
+          if (node != null) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return NodeViewer(key: ValueKey(listItem.nodeId), node: node);
+                },
+              ),
+            );
+          }
         },
         child: Text(listItem.title),
       ),

@@ -1,83 +1,19 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:pencil_flutter/models/data_model.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class NodeViewer extends StatefulWidget {
-  const NodeViewer({Key? key}) : super(key: key);
+  final Node node;
+
+  const NodeViewer({Key? key, required this.node}) : super(key: key);
 
   @override
   _NodeViewerState createState() => _NodeViewerState();
 }
 
 class _NodeViewerState extends State<NodeViewer> {
-  String getHtml() {
-    return '''
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <style>
-        html,
-        body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
-            display: flex;
-            align-items: stretch;
-            justify-content: stretch;
-        }
-
-        .root {
-            display: flex;
-            flex-grow: 1;
-            border: 1px solid red;
-            flex-direction: column;
-        }
-
-        .scroll {
-            flex-grow: 1;
-            overflow-y: scroll;
-            border: 1px solid green;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="root">
-        <h1>Welcome to the Full-Height Webpage</h1>
-        <button onClick="FlutterEditorChannel.postMessage('Hello')">Post message</button>
-        <div class="scroll">
-            <h2>Welcome to the Full-Height Webpage323</h2>
-            <h2>Welcome to the Full-Height Webpage323</h2>
-            <h2>Welcome to the Full-Height Webpage323</h2>
-            <h2>Welcome to the Full-Height Webpage323</h2>
-            <h2>Welcome to the Full-Height Webpage323</h2>
-            <h2>Welcome to the Full-Height Webpage323</h2>
-            <h2>Welcome to the Full-Height Webpage323</h2>
-            <h2>Welcome to the Full-Height Webpage323</h2>
-            <h2>Welcome to the Full-Height Webpage323</h2>
-            <h2>Welcome to the Full-Height Webpage323</h2>
-            <h2>Welcome to the Full-Height Webpage323</h2>
-            <h2>Welcome to the Full-Height Webpage323</h2>
-
-            <h2>Welcome to the Full-Height Webpage323</h2>
-            <h2>Welcome to the Full-Height Webpage323</h2>
-            <h2>Welcome to the Full-Height Webpage323</h2>
-            <h2>Welcome to the Full-Height Webpage323</h2>
-            <h2>Welcome to the Full-Height Webpage323</h2>
-            <h2>Welcome to the Full-Height Webpage323</h2>
-        </div>
-        <h1>END</h1>
-    </div>
-</body>
-
-</html>
-    ''';
-  }
-
   WebViewController? _controller;
 
   Future<void> _load() async {
@@ -96,8 +32,8 @@ class _NodeViewerState extends State<NodeViewer> {
           },
           onPageStarted: (String url) {},
           onPageFinished: (String url) {
-            // _controller?.runJavaScript(
-            //     "window.SET_EDITOR_PROPS('Something here123');  ");
+            _controller?.runJavaScript(
+                "window.updateEditor({ node: ${jsonEncode(widget.node.toJson())}, edit: true});");
           },
           onHttpError: (HttpResponseError error) {},
           onWebResourceError: (WebResourceError error) {},
@@ -109,8 +45,8 @@ class _NodeViewerState extends State<NodeViewer> {
           },
         ),
       );
-    // await controller.loadFlutterAsset('assets/webview/index.html');
-    await controller.loadHtmlString(getHtml());
+    await controller.loadFlutterAsset('assets/webview/index.html');
+    // await controller.loadHtmlString(getHtml());
     // await controller.loadRequest(Uri.parse('https://flutter.dev'));
     await controller.enableZoom(false);
 
@@ -120,8 +56,8 @@ class _NodeViewerState extends State<NodeViewer> {
   }
 
   Future<void> _reload() async {
-    print('a');
-    await _controller?.loadHtmlString(getHtml());
+    // print('a');
+    // await _controller?.loadHtmlString(getHtml());
   }
 
   @override
