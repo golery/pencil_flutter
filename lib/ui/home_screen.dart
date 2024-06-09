@@ -81,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
         } else {
           return Scaffold(
             appBar: AppBar(
-              title: Text('Home'),
+              title: Text(dataProvider.book?.name ?? 'Loading...'),
             ),
             body: getBody(dataProvider),
             floatingActionButton: FloatingActionButton(

@@ -32,16 +32,20 @@ class DataProvider with ChangeNotifier {
   Map<NodeId, bool> _openMap = {};
   Map<NodeId, Node> _nodeIdToNode = {};
 
+  Book? _book;
+  Book? get book => _book;
+
   Future<void> fetchData() async {
     _isLoading = true;
     _errorMessage = null;
     try {
       var bookList = await dataRepository.fetchBookList();
       print('Book list: $bookList');
-      var book = bookList.firstWhere((book) => book.id == 3);
-      if (book == null) {
+      _book = bookList.firstWhere((book) => book.id == 3);
+      if (_book == null) {
         throw Exception('Book not found');
       }
+      Book book = _book!;
       print('Book: $book');
       _rootId = book.rootId;
 

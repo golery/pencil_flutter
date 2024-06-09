@@ -22,4 +22,3 @@ flutter:
   uses-material-design: true
   assets:
     - assets/webview/index.html
-    - assets/webview/script.js
