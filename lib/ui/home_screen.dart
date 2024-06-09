@@ -17,10 +17,22 @@ class _HomeScreenState extends State<HomeScreen> {
   Node? _node;
 
   void handleOpenNode(Node node) {
-    setState(() {
-      _showNodeViewer = true;
-      _node = node;
-    });
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+          transitionDuration: Duration.zero,
+          reverseTransitionDuration: Duration.zero,
+          pageBuilder: (context, b, c) {
+            return Scaffold(
+                appBar: AppBar(
+                  title: Text(node.title ?? 'Node'),
+                ),
+                body: Column(children: [
+                  Text('header'),
+                  Expanded(child: NodeViewer(node: node)),
+                ]));
+          }),
+    );
   }
 
   Widget getBody(DataProvider dataProvider) {
