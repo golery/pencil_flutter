@@ -6,6 +6,8 @@ import 'package:pencil_flutter/providers/tree_model_provider.dart';
 import 'package:pencil_flutter/ui/node_viewer.dart';
 import 'package:provider/provider.dart';
 
+final GlobalKey<NodeViewerState> _formKey = GlobalKey<NodeViewerState>();
+
 class DataWidget extends StatelessWidget {
   final TreeListItem listItem;
 
@@ -42,7 +44,7 @@ class DataWidget extends StatelessWidget {
               context,
               MaterialPageRoute(
                 builder: (context) {
-                  return NodeViewer(key: ValueKey(listItem.nodeId), node: node);
+                  return NodeViewer(key: _formKey, node: node);
                 },
               ),
             );

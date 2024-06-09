@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:pencil_flutter/models/data_model.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -10,10 +10,21 @@ class NodeViewer extends StatefulWidget {
   const NodeViewer({Key? key, required this.node}) : super(key: key);
 
   @override
-  _NodeViewerState createState() => _NodeViewerState();
+  NodeViewerState createState() => NodeViewerState();
 }
 
-class _NodeViewerState extends State<NodeViewer> {
+class HtmlCache {
+  static String? _htmlContent;
+
+  static Future<String> loadHtml() async {
+    if (_htmlContent == null) {
+      _htmlContent = await rootBundle.loadString('assets/webview/index.html');
+    }
+    return _htmlContent!;
+  }
+}
+
+class NodeViewerState extends State<NodeViewer> {
   WebViewController? _controller;
 
   Future<void> _load() async {
@@ -45,10 +56,12 @@ class _NodeViewerState extends State<NodeViewer> {
           },
         ),
       );
-    await controller.loadFlutterAsset('assets/webview/index.html');
+    await controller.enableZoom(false);
+    await controller.loadHtmlString(await HtmlCache.loadHtml());
+
+    // await controller.loadFlutterAsset('assets/webview/index.html');
     // await controller.loadHtmlString(getHtml());
     // await controller.loadRequest(Uri.parse('https://flutter.dev'));
-    await controller.enableZoom(false);
 
     setState(() {
       _controller = controller;
