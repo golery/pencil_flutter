@@ -28,7 +28,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   title: Text(node.title ?? 'Node'),
                 ),
                 body: Column(children: [
-                  Text('header'),
                   Expanded(child: NodeViewer(node: node)),
                 ]));
           }),

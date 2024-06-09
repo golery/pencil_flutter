@@ -20,8 +20,6 @@ class HtmlCache {
   static Future<String> loadHtml() async {
     if (_htmlContent == null) {
       _htmlContent = await rootBundle.loadString('assets/webview/index.html');
-      _htmlContent = _htmlContent!.replaceAll(
-          '<div id="root"></div>', '<div>4444</div><div id="root"></div>');
     }
     return _htmlContent!;
   }
@@ -79,11 +77,6 @@ class NodeViewerState extends State<NodeViewer> {
     });
   }
 
-  Future<void> _reload() async {
-    // print('a');
-    // await _controller?.loadHtmlString(getHtml());
-  }
-
   @override
   void initState() {
     super.initState();
@@ -105,37 +98,20 @@ class NodeViewerState extends State<NodeViewer> {
     return Column(
       children: [
         Expanded(
-            child: Container(
-          height: 500,
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: Colors.blue,
-              width: 2.0,
-            ),
+          child: WebViewWidget(
+            controller: _controller!,
           ),
-          child: SizedBox(
-            child: WebViewWidget(
-              controller: _controller!,
-            ),
-          ),
-        )),
-        Row(
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                // _controller?.runJavaScript(
-                //     "window.SET_EDITOR_PROPS('Something here123');  ");
-                _load();
-              },
-              child: Text('Run JavaScript'),
-            ),
-            SizedBox(width: 10),
-            ElevatedButton(
-              onPressed: () => _reload(),
-              child: Text('Reload'),
-            ),
-          ],
         ),
+        Row(children: [
+          ElevatedButton(
+            onPressed: () {
+              // _controller?.runJavaScript(
+              //     "window.SET_EDITOR_PROPS('Something here123');  ");
+              _load();
+            },
+            child: Text('Run JavaScript'),
+          )
+        ]),
       ],
     );
   }
