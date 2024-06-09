@@ -104,11 +104,6 @@ class _DevScreenState extends State<DevScreen> {
     });
   }
 
-  Future<void> _reload() async {
-    print('a');
-    await _controller?.loadHtmlString(getHtml());
-  }
-
   @override
   void initState() {
     super.initState();
@@ -150,7 +145,24 @@ class _DevScreenState extends State<DevScreen> {
       children: [
         ElevatedButton(
           onPressed: () {
-            _flip();
+            // _flip();
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                  transitionDuration: Duration.zero,
+                  reverseTransitionDuration: Duration.zero,
+                  pageBuilder: (context, b, c) {
+                    return Scaffold(
+                        appBar: AppBar(
+                          title: Text('WebViewWidget'),
+                        ),
+                        body: Column(children: [
+                          Text('header'),
+                          Expanded(
+                              child: WebViewWidget(controller: _controller!)),
+                        ]));
+                  }),
+            );
           },
           child: Text('Flip'),
         ),
@@ -159,15 +171,3 @@ class _DevScreenState extends State<DevScreen> {
     );
   }
 }
-
-/*
- Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return NodeViewer(key: _formKey, node: node);
-                },
-              ),
-            );
-          }
-*/
