@@ -10,8 +10,8 @@ final GlobalKey<NodeViewerState> _formKey = GlobalKey<NodeViewerState>();
 
 class DataWidget extends StatelessWidget {
   final TreeListItem listItem;
-
-  DataWidget({required this.listItem});
+  final void Function(Node)? onPressed;
+  DataWidget({required this.listItem, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -39,15 +39,16 @@ class DataWidget extends StatelessWidget {
         onTap: () {
           final treeModel = Provider.of<DataProvider>(context, listen: false);
           final node = treeModel.findNodeById(listItem.nodeId);
-          if (node != null) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return NodeViewer(key: _formKey, node: node);
-                },
-              ),
-            );
+          if (node != null && onPressed != null) {
+            onPressed!(node);
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (context) {
+            //       return NodeViewer(key: _formKey, node: node);
+            //     },
+            //   ),
+            // );
           }
         },
         child: Text(listItem.title),
