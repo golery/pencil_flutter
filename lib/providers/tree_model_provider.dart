@@ -34,14 +34,16 @@ class DataProvider with ChangeNotifier {
 
   Book? _book;
   Book? get book => _book;
+  List<Book>? bookList;
 
   Future<void> fetchData() async {
     _isLoading = true;
     _errorMessage = null;
     try {
-      var bookList = await dataRepository.fetchBookList();
+      var books = await dataRepository.fetchBookList();
       print('Book list: $bookList');
-      _book = bookList.firstWhere((book) => book.id == 3);
+      bookList = books;
+      _book = books.firstWhere((book) => book.id == 3);
       if (_book == null) {
         throw Exception('Book not found');
       }

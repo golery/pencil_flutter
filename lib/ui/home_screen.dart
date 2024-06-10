@@ -5,6 +5,7 @@ import 'package:pencil_flutter/models/data_model.dart';
 import 'package:pencil_flutter/providers/tree_model_provider.dart';
 import 'package:pencil_flutter/ui/data_widget.dart';
 import 'package:pencil_flutter/ui/node_viewer.dart';
+import 'package:pencil_flutter/ui/select_book_screen.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -34,6 +35,17 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  void handleSelectBook() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('Select a book'),
+        ),
+        body: SelectBookScreen(),
+      );
+    }));
+  }
+
   Widget getBody(DataProvider dataProvider) {
     return Column(
       children: [
@@ -53,6 +65,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    context.read<DataProvider>().fetchData();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Consumer<DataProvider>(
       builder: (context, dataProvider, child) {
@@ -66,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
           return Scaffold(
             appBar: AppBar(
               title: ElevatedButton(
-                onPressed: () {},
+                onPressed: handleSelectBook,
                 child: Text(dataProvider.book?.name ?? ''),
               ),
             ),
