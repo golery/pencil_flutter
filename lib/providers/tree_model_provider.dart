@@ -36,6 +36,11 @@ class DataProvider with ChangeNotifier {
   Book? get book => _book;
   List<Book>? bookList;
 
+  void setBook(Book? book) {
+    _book = book;
+    notifyListeners();
+  }
+
   Future<void> fetchData() async {
     _isLoading = true;
     _errorMessage = null;
@@ -66,6 +71,7 @@ class DataProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+  
 
   void _addNodeToListItem(
       List<TreeListItem> listItems, NodeId nodeId, int level) {

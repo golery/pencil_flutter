@@ -1,10 +1,7 @@
 // ui/screens/home_screen.dart
 
 import 'package:flutter/material.dart';
-import 'package:pencil_flutter/models/data_model.dart';
 import 'package:pencil_flutter/providers/tree_model_provider.dart';
-import 'package:pencil_flutter/ui/data_widget.dart';
-import 'package:pencil_flutter/ui/node_viewer.dart';
 import 'package:provider/provider.dart';
 
 class SelectBookScreen extends StatefulWidget {
@@ -13,27 +10,6 @@ class SelectBookScreen extends StatefulWidget {
 }
 
 class _SelectBookScreenState extends State<SelectBookScreen> {
-  bool _showNodeViewer = false;
-  Node? _node;
-
-  void handleOpenNode(Node node) {
-    Navigator.push(
-      context,
-      PageRouteBuilder(
-          transitionDuration: Duration.zero,
-          reverseTransitionDuration: Duration.zero,
-          pageBuilder: (context, b, c) {
-            return Scaffold(
-                appBar: AppBar(
-                  title: Text(node.title ?? 'Node'),
-                ),
-                body: Column(children: [
-                  Expanded(child: NodeViewer(node: node)),
-                ]));
-          }),
-    );
-  }
-
   Widget getBody(DataProvider dataProvider) {
     var books = dataProvider.bookList ?? [];
     return ListView.separated(
@@ -42,6 +18,7 @@ class _SelectBookScreenState extends State<SelectBookScreen> {
         return ListTile(
           title: Text(books[index].name!),
           onTap: () {
+            dataProvider.setBook(books[index]);
             Navigator.pop(context);
           },
         );
