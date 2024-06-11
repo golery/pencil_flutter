@@ -16,9 +16,9 @@ class _SelectBookScreenState extends State<SelectBookScreen> {
       itemCount: books.length,
       itemBuilder: (context, index) {
         return ListTile(
-          title: Text(books[index].name!),
-          onTap: () {
-            dataProvider.setBook(books[index]);
+          title: Text(books[index].name),
+          onTap: () async {
+            await dataProvider.loadBoook(books[index].id);
             Navigator.pop(context);
           },
         );

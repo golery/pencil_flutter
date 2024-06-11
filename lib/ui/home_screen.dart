@@ -67,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<DataProvider>().fetchData();
+    context.read<DataProvider>().loadBoook(3);
   }
 
   @override
@@ -78,8 +78,6 @@ class _HomeScreenState extends State<HomeScreen> {
           return Center(child: CircularProgressIndicator());
         } else if (dataProvider.errorMessage != null) {
           return Center(child: Text('Error: ${dataProvider.errorMessage}'));
-        } else if (dataProvider.data.isEmpty) {
-          return Center(child: Text('No Data'));
         } else {
           return Scaffold(
             appBar: AppBar(

@@ -9,23 +9,13 @@ class DataProvider with ChangeNotifier {
   final DataRepository dataRepository;
 
   DataProvider({required this.dataRepository});
-
-  List<DataModel> _data = [
-    DataModel(id: 12, name: 'Item 1', description: 'Description 1'),
-    DataModel(id: 33, name: 'Item 2', description: 'Description 2'),
-  ];
-
   bool _isLoading = false;
   String? _errorMessage;
-
-  List<DataModel> get data => _data;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
 
   List<Node> _nodes = [];
   List<Node> get nodes => _nodes;
-
-  NodeId? _rootId;
 
   List<TreeListItem> _treeListItems = [];
   List<TreeListItem> get treeListItems => _treeListItems;
@@ -34,35 +24,40 @@ class DataProvider with ChangeNotifier {
 
   Book? _book;
   Book? get book => _book;
-  List<Book>? bookList;
 
-  void setBook(Book? book) {
-    _book = book;
+  List<Book>? _bookList;
+  List<Book>? get bookList => _bookList;
+
+  int? _bookId;
+
+  void setBookId(int bookId) {
+    this._bookId = bookId;
     notifyListeners();
   }
 
-  Future<void> fetchData() async {
+  Future<void> loadBoook(int bookId) async {
+    this._bookId = bookId;
+
+    List<Book> bookList;
+    if (_bookList == null) {
+      bookList = await dataRepository.fetchBookList();
+      _bookList = bookList;
+    } else {
+      bookList = _bookList!;
+    }
+
+    final book = bookList.firstWhere((book) => book.id == bookId);
+    this._book = book;
+
     _isLoading = true;
     _errorMessage = null;
     try {
-      var books = await dataRepository.fetchBookList();
-      print('Book list: $bookList');
-      bookList = books;
-      _book = books.firstWhere((book) => book.id == 3);
-      if (_book == null) {
-        throw Exception('Book not found');
-      }
-      Book book = _book!;
-      print('Book: $book');
-      _rootId = book.rootId;
-
-      _nodes = await dataRepository.fetchNodes(3);
+      _nodes = await dataRepository.fetchNodes(bookId);
       for (var node in nodes) {
         _nodeIdToNode[node.id] = node;
       }
 
       process(_nodes, book.rootId);
-      notifyListeners();
     } catch (e, stackTrace) {
       print('Error: $e');
       print('Stack trace: $stackTrace');
@@ -71,7 +66,6 @@ class DataProvider with ChangeNotifier {
       notifyListeners();
     }
   }
-  
 
   void _addNodeToListItem(
       List<TreeListItem> listItems, NodeId nodeId, int level) {
@@ -107,7 +101,13 @@ class DataProvider with ChangeNotifier {
   void openNode(NodeId nodeId, bool open) {
     print('Open node $nodeId $open');
     _openMap[nodeId] = open;
-    process(_nodes, _rootId!);
+
+    var rootId = this._book?.rootId;
+    if (rootId == null) {
+      print('No root Id');
+      return;
+    }
+    process(_nodes, rootId!);
     notifyListeners();
   }
 
