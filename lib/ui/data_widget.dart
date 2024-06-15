@@ -18,9 +18,10 @@ class DataWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      horizontalTitleGap: 0,
       contentPadding: EdgeInsets.all(0),
       leading: Padding(
-        padding: EdgeInsets.only(left: listItem.level * 37),
+        padding: EdgeInsets.only(left: listItem.level * 30),
         child: IconButton(
           icon: listItem.isOpen == null
               ? const SizedBox.shrink()
