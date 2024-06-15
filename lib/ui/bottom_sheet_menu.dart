@@ -11,7 +11,10 @@ class BottomSheetMenu extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.add),
             onPressed: () {
-              // Add your onPressed logic here
+              Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Add pressed')),
+              );
             },
           ),
           IconButton(
