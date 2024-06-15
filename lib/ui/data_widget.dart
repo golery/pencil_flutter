@@ -16,7 +16,7 @@ class DataWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final treeModel = Provider.of<DataProvider>(context, listen: false);
+    final treeModel = Provider.of<DataProvider>(context, listen: true);
     return ListTile(
       contentPadding: EdgeInsets.all(0),
       leading: Padding(
@@ -57,7 +57,7 @@ class DataWidget extends StatelessWidget {
       title: GestureDetector(
         onTap: () {
           final treeModel = Provider.of<DataProvider>(context, listen: false);
-          final node = treeModel.findNodeById(listItem.nodeId);
+          final node = treeModel.findNodeByIdOpt(listItem.nodeId);
           if (node != null && onPressed != null) {
             onPressed!(node);
             // Navigator.push(

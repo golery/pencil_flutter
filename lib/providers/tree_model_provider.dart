@@ -1,5 +1,7 @@
 // providers/data_provider.dart
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:pencil_flutter/models/data_model.dart';
 import 'package:pencil_flutter/models/tree_model.dart';
@@ -15,12 +17,13 @@ class DataProvider with ChangeNotifier {
   String? get errorMessage => _errorMessage;
 
   List<Node> _nodes = [];
+  Map<NodeId, Node> _nodeIdToNode = {};
+
   List<Node> get nodes => _nodes;
 
   List<TreeListItem> _treeListItems = [];
   List<TreeListItem> get treeListItems => _treeListItems;
   Map<NodeId, bool> _openMap = {};
-  Map<NodeId, Node> _nodeIdToNode = {};
 
   Book? _book;
   Book? get book => _book;
@@ -116,12 +119,31 @@ class DataProvider with ChangeNotifier {
     return TreeListItem(node.id, level, title, isOpen);
   }
 
-  Node? findNodeById(NodeId nodeId) {
+  Node? findNodeByIdOpt(NodeId nodeId) {
     return _nodeIdToNode[nodeId];
   }
 
+  Node getNodeById(NodeId nodeId) {
+    final node = _nodeIdToNode[nodeId];
+    if (node == null) {
+      // throw exception
+      throw Exception('Node not found $nodeId');
+    }
+    return node;
+  }
+
   addNewNode(NodeId nodeId) {
-    Node node = findNodeById(nodeId);
+    Node parent = getNodeById(nodeId);
+    Node newNode = Node(
+        id: Random().nextInt(10000),
+        name: 'New node',
+        text: 'New node text',
+        title: 'New node title',
+        children: []);
+    _nodes.add(newNode);
+    _nodeIdToNode[newNode.id] = newNode;
+    parent.children.insert(0, newNode.id);
+    print('Added node ${newNode.id}');
     notifyListeners();
   }
 }
