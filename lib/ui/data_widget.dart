@@ -48,7 +48,9 @@ class DataWidget extends StatelessWidget {
                   onAdd: () async => {
                         treeModel.addNewNode(listItem.nodeId),
                       },
-                  onRemove: () async => {});
+                  onRemove: () async => {
+                        treeModel.deleteNode(listItem.nodeId),
+                      });
             },
             isDismissible: true,
           );

@@ -147,4 +147,22 @@ class DataProvider with ChangeNotifier {
     print('Added node ${newNode.id}');
     _regeneratorListItems(nodes, _book!.rootId);
   }
+
+  Node getParentNode(NodeId nodeId) {
+    return nodes.firstWhere((node) => node.children.contains(nodeId));
+  }
+
+  deleteNode(NodeId nodeId) {
+    Node node = getNodeById(nodeId);
+
+    // find parent of node node and remove its id from parent.children
+    Node parent = getParentNode(nodeId);
+    parent.children.remove(nodeId);
+
+    _nodes.removeWhere((n) => n.id == nodeId);
+    _nodeIdToNode.remove(nodeId);
+    _openMap.remove(nodeId);
+    _regeneratorListItems(nodes, _book!.rootId);
+    print('Deleted node ${node.id}');
+  }
 }
