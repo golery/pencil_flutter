@@ -16,6 +16,7 @@ class DataWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final treeModel = Provider.of<DataProvider>(context, listen: false);
     return ListTile(
       contentPadding: EdgeInsets.all(0),
       leading: Padding(
@@ -33,7 +34,6 @@ class DataWidget extends StatelessWidget {
             }
             // print('Node open $listItem');
             // Get the TreeModelProvider from the nearest Provider<TreeModel>.
-            final treeModel = Provider.of<DataProvider>(context, listen: false);
             treeModel.openNode(listItem.nodeId, !listItem.isOpen!);
           },
         ),
@@ -44,7 +44,11 @@ class DataWidget extends StatelessWidget {
           showModalBottomSheet(
             context: context,
             builder: (context) {
-              return BottomSheetMenu();
+              return BottomSheetMenu(
+                  onAdd: () async => {
+                        treeModel.addNewNode(listItem.nodeId),
+                      },
+                  onRemove: () async => {});
             },
             isDismissible: true,
           );

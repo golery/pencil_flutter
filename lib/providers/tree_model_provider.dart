@@ -119,4 +119,9 @@ class DataProvider with ChangeNotifier {
   Node? findNodeById(NodeId nodeId) {
     return _nodeIdToNode[nodeId];
   }
+
+  addNewNode(NodeId nodeId) {
+    Node node = findNodeById(nodeId);
+    notifyListeners();
+  }
 }

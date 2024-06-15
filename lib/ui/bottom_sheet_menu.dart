@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
 class BottomSheetMenu extends StatelessWidget {
+  final Future<void> Function() onAdd;
+  final Future<void> Function() onRemove;
+
+  BottomSheetMenu({required this.onAdd, required this.onRemove});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -10,17 +15,16 @@ class BottomSheetMenu extends StatelessWidget {
         children: [
           IconButton(
             icon: Icon(Icons.add),
-            onPressed: () {
+            onPressed: () async {
+              await onAdd();
               Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Add pressed')),
-              );
             },
           ),
           IconButton(
             icon: Icon(Icons.remove),
-            onPressed: () {
-              // Add your onPressed logic here
+            onPressed: () async {
+              await onRemove();
+              Navigator.pop(context);
             },
           ),
         ],
