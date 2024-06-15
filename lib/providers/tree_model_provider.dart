@@ -137,7 +137,8 @@ class DataProvider with ChangeNotifier {
     Node newNode = Node(
         id: Random().nextInt(10000),
         name: 'New node',
-        text: 'New node text',
+        text:
+            '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"new node"}]}]}',
         title: 'New node title',
         children: []);
     _nodes.add(newNode);
