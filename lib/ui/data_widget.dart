@@ -35,6 +35,19 @@ class DataWidget extends StatelessWidget {
           },
         ),
       ),
+      trailing: IconButton(
+        icon: Icon(Icons.more_vert),
+        onPressed: () {
+          if (listItem.isOpen == null) {
+            print('Cannot open node');
+            return;
+          }
+          // print('Node open $listItem');
+          // Get the TreeModelProvider from the nearest Provider<TreeModel>.
+          final treeModel = Provider.of<DataProvider>(context, listen: false);
+          treeModel.openNode(listItem.nodeId, !listItem.isOpen!);
+        },
+      ),
       title: GestureDetector(
         onTap: () {
           final treeModel = Provider.of<DataProvider>(context, listen: false);
