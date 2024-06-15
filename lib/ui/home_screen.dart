@@ -75,6 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Consumer<DataProvider>(
       builder: (context, dataProvider, child) {
+        print('Rebuild home screen');
         if (dataProvider.isLoading) {
           return Center(child: CircularProgressIndicator());
         } else if (dataProvider.errorMessage != null) {

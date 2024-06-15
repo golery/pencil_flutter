@@ -60,7 +60,7 @@ class DataProvider with ChangeNotifier {
         _nodeIdToNode[node.id] = node;
       }
 
-      process(_nodes, book.rootId);
+      _regeneratorListItems(_nodes, book.rootId);
     } catch (e, stackTrace) {
       print('Error: $e');
       print('Stack trace: $stackTrace');
@@ -89,7 +89,7 @@ class DataProvider with ChangeNotifier {
     }
   }
 
-  void process(List<Node> nodes, NodeId rootId) {
+  void _regeneratorListItems(List<Node> nodes, NodeId rootId) {
     var root = _nodeIdToNode[rootId];
     if (root == null) {
       throw Exception('Root node $rootId not found');
@@ -99,6 +99,7 @@ class DataProvider with ChangeNotifier {
     List<TreeListItem> listItem = [];
     _addNodeToListItem(listItem, root.id, -1);
     _treeListItems = listItem;
+    notifyListeners();
   }
 
   void openNode(NodeId nodeId, bool open) {
@@ -110,8 +111,7 @@ class DataProvider with ChangeNotifier {
       print('No root Id');
       return;
     }
-    process(_nodes, rootId!);
-    notifyListeners();
+    _regeneratorListItems(_nodes, rootId!);
   }
 
   TreeListItem getTreeListItem(Node node, int level, bool? isOpen) {
@@ -145,6 +145,6 @@ class DataProvider with ChangeNotifier {
     parent.children.insert(0, newNode.id);
     _openMap[nodeId] = true;
     print('Added node ${newNode.id}');
-    notifyListeners();
+    _regeneratorListItems(nodes, _book!.rootId);
   }
 }
