@@ -16,13 +16,15 @@ class DataWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      contentPadding: EdgeInsets.all(0),
       leading: Padding(
         padding: EdgeInsets.only(left: listItem.level * 37),
         child: IconButton(
           icon: listItem.isOpen == null
               ? const SizedBox.shrink()
               : Icon(
-                  listItem.isOpen! ? Icons.arrow_drop_down : Icons.arrow_right),
+                  listItem.isOpen! ? Icons.arrow_drop_down : Icons.arrow_right,
+                  color: Colors.grey),
           onPressed: () {
             if (listItem.isOpen == null) {
               print('Cannot open node');
@@ -36,7 +38,7 @@ class DataWidget extends StatelessWidget {
         ),
       ),
       trailing: IconButton(
-        icon: Icon(Icons.more_vert),
+        icon: const Icon(Icons.more_vert, color: Colors.grey),
         onPressed: () {
           if (listItem.isOpen == null) {
             print('Cannot open node');
