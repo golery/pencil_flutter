@@ -12,11 +12,11 @@ final GlobalKey<NodeViewerState> _formKey = GlobalKey<NodeViewerState>();
 class DataWidget extends StatelessWidget {
   final TreeListItem listItem;
   final void Function(Node)? onPressed;
-  DataWidget({required this.listItem, this.onPressed});
+  final DataProvider treeModel;
+  DataWidget({required this.listItem, this.onPressed, required this.treeModel});
 
   @override
   Widget build(BuildContext context) {
-    final treeModel = Provider.of<DataProvider>(context, listen: true);
     return ListTile(
       contentPadding: EdgeInsets.all(0),
       leading: Padding(

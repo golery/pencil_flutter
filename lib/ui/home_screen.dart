@@ -55,6 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
             itemBuilder: (context, index) {
               return DataWidget(
                   listItem: dataProvider.treeListItems[index],
+                  treeModel: dataProvider,
                   onPressed: handleOpenNode);
             },
             separatorBuilder: (context, index) => const Divider(),
@@ -99,6 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
 class _ModalState extends State<Modal> {
   bool isVisible = false;
 

@@ -143,6 +143,7 @@ class DataProvider with ChangeNotifier {
     _nodes.add(newNode);
     _nodeIdToNode[newNode.id] = newNode;
     parent.children.insert(0, newNode.id);
+    _openMap[nodeId] = true;
     print('Added node ${newNode.id}');
     notifyListeners();
   }
