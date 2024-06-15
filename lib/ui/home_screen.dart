@@ -99,3 +99,57 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+class _ModalState extends State<Modal> {
+  bool isVisible = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Visibility(
+      visible: isVisible,
+      child: Stack(
+        children: [
+          GestureDetector(
+            onTap: () {
+              isVisible = false;
+              setState(() {});
+            },
+            child: Container(
+              color: Colors.black.withOpacity(0.5),
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+            ),
+          ),
+          Positioned(
+            bottom: 20,
+            left: 0,
+            right: 0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () {
+                    // Add your onPressed logic here
+                  },
+                ),
+                IconButton(
+                  icon: Icon(Icons.remove),
+                  onPressed: () {
+                    // Add your onPressed logic here
+                  },
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class Modal extends StatefulWidget {
+  const Modal({Key? key}) : super(key: key);
+
+  @override
+  _ModalState createState() => _ModalState();
+}
