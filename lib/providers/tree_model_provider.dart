@@ -60,7 +60,7 @@ class DataProvider with ChangeNotifier {
         _nodeIdToNode[node.id] = node;
       }
 
-      _regeneratorListItems(_nodes, book.rootId);
+      _regenerateListItems(_nodes, book.rootId);
     } catch (e, stackTrace) {
       print('Error: $e');
       print('Stack trace: $stackTrace');
@@ -89,7 +89,7 @@ class DataProvider with ChangeNotifier {
     }
   }
 
-  void _regeneratorListItems(List<Node> nodes, NodeId rootId) {
+  void _regenerateListItems(List<Node> nodes, NodeId rootId) {
     var root = _nodeIdToNode[rootId];
     if (root == null) {
       throw Exception('Root node $rootId not found');
@@ -111,7 +111,7 @@ class DataProvider with ChangeNotifier {
       print('No root Id');
       return;
     }
-    _regeneratorListItems(_nodes, rootId!);
+    _regenerateListItems(_nodes, rootId!);
   }
 
   TreeListItem getTreeListItem(Node node, int level, bool? isOpen) {
@@ -145,11 +145,27 @@ class DataProvider with ChangeNotifier {
     parent.children.insert(0, newNode.id);
     _openMap[nodeId] = true;
     print('Added node ${newNode.id}');
-    _regeneratorListItems(nodes, _book!.rootId);
+    _regenerateListItems(nodes, _book!.rootId);
   }
 
   Node getParentNode(NodeId nodeId) {
     return nodes.firstWhere((node) => node.children.contains(nodeId));
+  }
+
+  List<NodeId> getDescendantsNodeId(NodeId nodeId) {
+    List<NodeId> descendants = [nodeId];
+
+    void _iterate(Node node, List<NodeId> descendants) {
+      descendants.add(node.id);
+      for (var childId in node.children) {
+        var childNode = getNodeById(childId);
+        _iterate(childNode, descendants);
+      }
+    }
+
+    var node = getNodeById(nodeId);
+    _iterate(node, descendants);
+    return descendants;
   }
 
   deleteNode(NodeId nodeId) {
@@ -159,10 +175,12 @@ class DataProvider with ChangeNotifier {
     Node parent = getParentNode(nodeId);
     parent.children.remove(nodeId);
 
-    _nodes.removeWhere((n) => n.id == nodeId);
-    _nodeIdToNode.remove(nodeId);
-    _openMap.remove(nodeId);
-    _regeneratorListItems(nodes, _book!.rootId);
+    var descendants = getDescendantsNodeId(nodeId);
+    _nodes.removeWhere((n) => descendants.contains(n.id));
+    _openMap.removeWhere((key, value) => descendants.contains(key));
+    _nodeIdToNode.removeWhere((key, value) => descendants.contains(key));
+
+    _regenerateListItems(nodes, _book!.rootId);
     print('Deleted node ${node.id}');
   }
 }
