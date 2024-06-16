@@ -46,12 +46,9 @@ class DataWidget extends StatelessWidget {
             context: context,
             builder: (context) {
               return BottomSheetMenu(
-                  onAdd: () async => {
-                        treeModel.addNewNode(listItem.nodeId),
-                      },
-                  onRemove: () async => {
-                        treeModel.deleteNode(listItem.nodeId),
-                      });
+                  onAdd: () async => {treeModel.addNewNode(listItem.nodeId)},
+                  onRemove: () async =>
+                      {treeModel.deleteNode(listItem.nodeId)});
             },
             isDismissible: true,
           );

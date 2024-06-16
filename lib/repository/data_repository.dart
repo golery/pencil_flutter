@@ -26,4 +26,10 @@ class DataRepository {
     await apiService.updateNode(node);
     print('Updated node ${node.id}');
   }
+
+  Future<void> deleteNode(NodeId nodeId) async {
+    print('Deleting node ${nodeId}');
+    await apiService.deleteNode(nodeId);
+    print('Deleted node ${nodeId}');
+  }
 }

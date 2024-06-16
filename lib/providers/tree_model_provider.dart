@@ -173,7 +173,7 @@ class DataProvider with ChangeNotifier {
     return descendants;
   }
 
-  deleteNode(NodeId nodeId) {
+  deleteNode(NodeId nodeId) async {
     Node node = getNodeById(nodeId);
 
     // find parent of node node and remove its id from parent.children
@@ -186,6 +186,8 @@ class DataProvider with ChangeNotifier {
     _nodeIdToNode.removeWhere((key, value) => descendants.contains(key));
 
     _regenerateListItems(nodes, _book!.rootId);
+
+    await dataRepository.deleteNode(node.id);
     print('Deleted node ${node.id}');
   }
 

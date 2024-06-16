@@ -27,7 +27,6 @@ class _HomeScreenState extends State<HomeScreen> {
             return NodeViewer(node: node);
           }),
     );
-    print('Rebuild11 ${node.title}');
     dataProvider.rebuildListItems();
     dataProvider.updateNode(node);
   }

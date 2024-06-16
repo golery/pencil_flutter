@@ -22,4 +22,10 @@ class ApiClient {
         },
         body: jsonEncode(body));
   }
+
+  Future<http.Response> deleteRequest(String endpoint) async {
+    final url = Uri.parse('$baseUrl$endpoint');
+    return await http
+        .delete(url, headers: {"Authorization": "Bearer mock_token"});
+  }
 }

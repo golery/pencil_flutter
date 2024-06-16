@@ -56,4 +56,28 @@ class ApiService {
       throw Exception('Failed to update node ${node.id}');
     }
   }
+
+  Future<void> addNode(NodeId parentId, int position) async {
+    final response = await apiClient.postRequest(
+        '/api2/pencil/add/$parentId?position=$position', null);
+
+    if (response.statusCode == 200) {
+      print('Added node. Response: ${response.body}');
+      return;
+    } else {
+      throw Exception('Failed to add node');
+    }
+  }
+
+  Future<void> deleteNode(NodeId nodeId) async {
+    final response =
+        await apiClient.deleteRequest('/api2/pencil/delete/${nodeId}');
+
+    if (response.statusCode == 200) {
+      print('Deleted node. Response: ${response.body}');
+      return;
+    } else {
+      throw Exception('Failed to delete node ${nodeId}');
+    }
+  }
 }
