@@ -50,13 +50,20 @@ class _HomeScreenState extends State<HomeScreen> {
             onReorder: (oldIndex, newIndex) => {},
             itemCount: dataProvider.treeListItems.length,
             itemBuilder: (context, index) {
-              return DataWidget(
-                  key: Key('${dataProvider.treeListItems[index].nodeId}'),
-                  listItem: dataProvider.treeListItems[index],
-                  treeModel: dataProvider,
-                  onPressed: (node) {
-                    handleOpenNode(dataProvider, node);
-                  });
+              return Container(
+                  key: ValueKey(dataProvider.treeListItems[index].nodeId),
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(color: Color(0xFFDADADA), width: 1.0),
+                    ),
+                  ),
+                  child: DataWidget(
+                      key: Key('${dataProvider.treeListItems[index].nodeId}'),
+                      listItem: dataProvider.treeListItems[index],
+                      treeModel: dataProvider,
+                      onPressed: (node) {
+                        handleOpenNode(dataProvider, node);
+                      }));
             },
           ),
         ),
