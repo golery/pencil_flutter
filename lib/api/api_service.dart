@@ -57,13 +57,13 @@ class ApiService {
     }
   }
 
-  Future<void> addNode(NodeId parentId, int position) async {
+  Future<Node> addNode(NodeId parentId, int position) async {
     final response = await apiClient.postRequest(
         '/api2/pencil/add/$parentId?position=$position', null);
 
     if (response.statusCode == 200) {
       print('Added node. Response: ${response.body}');
-      return;
+      return Node.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to add node');
     }

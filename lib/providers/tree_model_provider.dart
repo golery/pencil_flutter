@@ -136,15 +136,9 @@ class DataProvider with ChangeNotifier {
     return node;
   }
 
-  addNewNode(NodeId nodeId) {
+  addNewNode(NodeId nodeId) async {
     Node parent = getNodeById(nodeId);
-    Node newNode = Node(
-        id: Random().nextInt(10000),
-        name: 'New node',
-        text:
-            '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"new node"}]}]}',
-        title: 'New node title',
-        children: []);
+    Node newNode = await dataRepository.addNewNode(parent.id, 0);
     _nodes.add(newNode);
     _nodeIdToNode[newNode.id] = newNode;
     parent.children.insert(0, newNode.id);

@@ -13,14 +13,15 @@ class ApiClient {
   }
 
   Future<http.Response> postRequest(String endpoint, Object? body) async {
-    print('POST ${jsonEncode(body)}');
+    final bodyTxt = body == null ? null : jsonEncode(body);
+    print('POST ${jsonEncode(bodyTxt)}');
     final url = Uri.parse('$baseUrl$endpoint');
     return await http.post(url,
         headers: {
           "Authorization": "Bearer mock_token",
           "Content-Type": "application/json"
         },
-        body: jsonEncode(body));
+        body: bodyTxt);
   }
 
   Future<http.Response> deleteRequest(String endpoint) async {

@@ -32,4 +32,11 @@ class DataRepository {
     await apiService.deleteNode(nodeId);
     print('Deleted node ${nodeId}');
   }
+
+  Future<Node> addNewNode(NodeId parentId, int position) async {
+    print('Adding new node to $parentId at position $position');
+    var newNode = await apiService.addNode(parentId, position);
+    print('Added new node ${newNode.id}');
+    return newNode;
+  }
 }
