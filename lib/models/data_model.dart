@@ -56,7 +56,7 @@ class Book {
 
 class Node {
   final NodeId id;
-  final String? name;
+  String? name;
   String? text;
   String? title;
   final List<NodeId> children;

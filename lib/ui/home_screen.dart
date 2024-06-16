@@ -29,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
     print('Rebuild11 ${node.title}');
     dataProvider.rebuildListItems();
+    dataProvider.updateNode(node);
   }
 
   void handleSelectBook() {

@@ -54,12 +54,13 @@ class NodeViewerState extends State<NodeViewer> {
           Map<String, dynamic>? json = jsonDecode(contentNode);
           if (json != null) {
             widget.node.title = json['title'];
+            widget.node.name = json['title'];
             widget.node.text = json['text'];
           }
         }
 
         if (!context.mounted) return;
-        Navigator.of(context).pop();
+        Navigator.of(context).pop(widget.node);
       },
       child: Scaffold(
           appBar: AppBar(

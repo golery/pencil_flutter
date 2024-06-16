@@ -45,4 +45,15 @@ class ApiService {
       throw Exception('Failed to load nodes');
     }
   }
+
+  Future<void> updateNode(Node node) async {
+    final response = await apiClient.postRequest('/api2/pencil/update', node);
+
+    if (response.statusCode == 200) {
+      print('Updated node. Response: ${response.body}');
+      return;
+    } else {
+      throw Exception('Failed to update node ${node.id}');
+    }
+  }
 }

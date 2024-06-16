@@ -188,4 +188,8 @@ class DataProvider with ChangeNotifier {
     _regenerateListItems(nodes, _book!.rootId);
     print('Deleted node ${node.id}');
   }
+
+  updateNode(Node node) async {
+    await dataRepository.updateNode(node);
+  }
 }

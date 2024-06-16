@@ -20,4 +20,10 @@ class DataRepository {
   Future<List<Node>> fetchNodes(NodeId bookId) async {
     return await apiService.fetchNodes(bookId);
   }
+
+  Future<void> updateNode(Node node) async {
+    print('Updating node ${node.id}: $node');
+    await apiService.updateNode(node);
+    print('Updated node ${node.id}');
+  }
 }
