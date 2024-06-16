@@ -5,6 +5,8 @@ import 'package:pencil_flutter/providers/tree_model_provider.dart';
 import 'package:provider/provider.dart';
 
 class SelectBookScreen extends StatefulWidget {
+  const SelectBookScreen({super.key});
+
   @override
   _SelectBookScreenState createState() => _SelectBookScreenState();
 }

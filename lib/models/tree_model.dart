@@ -80,12 +80,10 @@ class TreeModel {
   static Map<NodeId, NodeId> _buildParentMap(List<TreeNode> nodes) {
     final map = <NodeId, NodeId>{};
     for (var node in nodes) {
-      if (node.children != null) {
-        for (var childId in node.children) {
-          map[childId] = node.id;
-        }
+      for (var childId in node.children) {
+        map[childId] = node.id;
       }
-    }
+        }
     return map;
   }
 }

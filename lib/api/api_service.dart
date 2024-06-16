@@ -71,13 +71,13 @@ class ApiService {
 
   Future<void> deleteNode(NodeId nodeId) async {
     final response =
-        await apiClient.deleteRequest('/api2/pencil/delete/${nodeId}');
+        await apiClient.deleteRequest('/api2/pencil/delete/$nodeId');
 
     if (response.statusCode == 200) {
       print('Deleted node. Response: ${response.body}');
       return;
     } else {
-      throw Exception('Failed to delete node ${nodeId}');
+      throw Exception('Failed to delete node $nodeId');
     }
   }
 
@@ -91,7 +91,7 @@ class ApiService {
       print('Moved node. Response: ${response.body}');
       return;
     } else {
-      throw Exception('Failed to move node ${nodeId}');
+      throw Exception('Failed to move node $nodeId');
     }
   }
 }

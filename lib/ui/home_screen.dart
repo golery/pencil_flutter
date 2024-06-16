@@ -9,12 +9,14 @@ import 'package:pencil_flutter/ui/select_book_screen.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool _showNodeViewer = false;
+  final bool _showNodeViewer = false;
   Node? _node;
 
   void handleOpenNode(DataProvider dataProvider, Node node) async {
@@ -35,9 +37,9 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return Scaffold(
         appBar: AppBar(
-          title: Text('Select a book'),
+          title: const Text('Select a book'),
         ),
-        body: SelectBookScreen(),
+        body: const SelectBookScreen(),
       );
     }));
   }
@@ -85,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (context, dataProvider, child) {
         print('Rebuild home screen');
         if (dataProvider.isLoading) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (dataProvider.errorMessage != null) {
           return Center(child: Text('Error: ${dataProvider.errorMessage}'));
         } else {
@@ -101,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () {
                 // Add your onPressed logic here
               },
-              child: Icon(Icons.add),
+              child: const Icon(Icons.add),
             ),
           );
         }
@@ -138,13 +140,13 @@ class _ModalState extends State<Modal> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 IconButton(
-                  icon: Icon(Icons.add),
+                  icon: const Icon(Icons.add),
                   onPressed: () {
                     // Add your onPressed logic here
                   },
                 ),
                 IconButton(
-                  icon: Icon(Icons.remove),
+                  icon: const Icon(Icons.remove),
                   onPressed: () {
                     // Add your onPressed logic here
                   },
@@ -159,7 +161,7 @@ class _ModalState extends State<Modal> {
 }
 
 class Modal extends StatefulWidget {
-  const Modal({Key? key}) : super(key: key);
+  const Modal({super.key});
 
   @override
   _ModalState createState() => _ModalState();

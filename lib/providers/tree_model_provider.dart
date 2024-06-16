@@ -1,6 +1,5 @@
 // providers/data_provider.dart
 
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:pencil_flutter/models/data_model.dart';
@@ -17,13 +16,13 @@ class DataProvider with ChangeNotifier {
   String? get errorMessage => _errorMessage;
 
   List<Node> _nodes = [];
-  Map<NodeId, Node> _nodeIdToNode = {};
+  final Map<NodeId, Node> _nodeIdToNode = {};
 
   List<Node> get nodes => _nodes;
 
   List<TreeListItem> _treeListItems = [];
   List<TreeListItem> get treeListItems => _treeListItems;
-  Map<NodeId, bool> _openMap = {};
+  final Map<NodeId, bool> _openMap = {};
 
   Book? _book;
   Book? get book => _book;
@@ -34,12 +33,12 @@ class DataProvider with ChangeNotifier {
   int? _bookId;
 
   void setBookId(int bookId) {
-    this._bookId = bookId;
+    _bookId = bookId;
     notifyListeners();
   }
 
   Future<void> loadBoook(int bookId) async {
-    this._bookId = bookId;
+    _bookId = bookId;
 
     List<Book> bookList;
     if (_bookList == null) {
@@ -50,7 +49,7 @@ class DataProvider with ChangeNotifier {
     }
 
     final book = bookList.firstWhere((book) => book.id == bookId);
-    this._book = book;
+    _book = book;
 
     _isLoading = true;
     _errorMessage = null;
@@ -79,7 +78,7 @@ class DataProvider with ChangeNotifier {
     }
     if (level >= 0) {
       bool? isOpen =
-          node.children.length == 0 ? null : (_openMap[nodeId] ?? false);
+          node.children.isEmpty ? null : (_openMap[nodeId] ?? false);
       listItems.add(getTreeListItem(node, level, isOpen));
     }
     if (_openMap[nodeId] == true) {
@@ -110,7 +109,7 @@ class DataProvider with ChangeNotifier {
     print('Open node $nodeId $open');
     _openMap[nodeId] = open;
 
-    var rootId = this._book?.rootId;
+    var rootId = _book?.rootId;
     if (rootId == null) {
       print('No root Id');
       return;
@@ -154,16 +153,16 @@ class DataProvider with ChangeNotifier {
   List<NodeId> getDescendantsNodeId(NodeId nodeId) {
     List<NodeId> descendants = [nodeId];
 
-    void _iterate(Node node, List<NodeId> descendants) {
+    void iterate(Node node, List<NodeId> descendants) {
       descendants.add(node.id);
       for (var childId in node.children) {
         var childNode = getNodeById(childId);
-        _iterate(childNode, descendants);
+        iterate(childNode, descendants);
       }
     }
 
     var node = getNodeById(nodeId);
-    _iterate(node, descendants);
+    iterate(node, descendants);
     return descendants;
   }
 

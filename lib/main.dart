@@ -8,7 +8,6 @@ import 'package:pencil_flutter/repository/data_repository.dart';
 import 'package:pencil_flutter/dev/dev.dart';
 import 'package:pencil_flutter/ui/home_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter/rendering.dart';
 
 void main() {
   // debugPaintSizeEnabled = true;
@@ -25,7 +24,7 @@ const IS_WIDGET_DEV = false;
 class MyApp extends StatelessWidget {
   final DataRepository dataRepository;
 
-  MyApp({required this.dataRepository});
+  const MyApp({super.key, required this.dataRepository});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +34,7 @@ class MyApp extends StatelessWidget {
               create: (context) =>
                   DataProvider(dataRepository: dataRepository)),
         ],
-        child: MaterialApp(
+        child: const MaterialApp(
           title: 'Pencil',
           home: Scaffold(
             body: SafeArea(

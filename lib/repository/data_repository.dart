@@ -28,9 +28,9 @@ class DataRepository {
   }
 
   Future<void> deleteNode(NodeId nodeId) async {
-    print('Deleting node ${nodeId}');
+    print('Deleting node $nodeId');
     await apiService.deleteNode(nodeId);
-    print('Deleted node ${nodeId}');
+    print('Deleted node $nodeId');
   }
 
   Future<Node> addNewNode(NodeId parentId, int position) async {
@@ -42,8 +42,8 @@ class DataRepository {
 
   Future<void> moveNode(
       NodeId nodeId, NodeId newParentId, int newPosition) async {
-    print('Moving node ${nodeId} to ${newParentId} at position ${newPosition}');
+    print('Moving node $nodeId to $newParentId at position $newPosition');
     await apiService.moveNode(nodeId, newParentId, newPosition);
-    print('Moved node ${nodeId} to ${newParentId} at position ${newPosition}');
+    print('Moved node $nodeId to $newParentId at position $newPosition');
   }
 }

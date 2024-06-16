@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class DevScreen extends StatefulWidget {
-  const DevScreen({Key? key}) : super(key: key);
+  const DevScreen({super.key});
 
   @override
   _DevScreenState createState() => _DevScreenState();
@@ -125,10 +125,10 @@ class _DevScreenState extends State<DevScreen> {
   @override
   Widget build(BuildContext context) {
     if (_controller == null) {
-      return Text('Loading');
+      return const Text('Loading');
     }
 
-    Widget body = Text('Hello');
+    Widget body = const Text('Hello');
     if (_flipCounter % 2 == 1) {
       body = Expanded(
           child: Container(
@@ -152,7 +152,7 @@ class _DevScreenState extends State<DevScreen> {
           onPressed: () {
             _flip();
           },
-          child: Text('Flip'),
+          child: const Text('Flip'),
         ),
         body,
       ],

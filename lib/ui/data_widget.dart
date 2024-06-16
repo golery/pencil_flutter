@@ -13,7 +13,7 @@ class DataWidget extends StatelessWidget {
   final TreeListItem listItem;
   final void Function(Node)? onPressed;
   final DataProvider treeModel;
-  DataWidget(
+  const DataWidget(
       {required super.key,
       required this.listItem,
       this.onPressed,
@@ -23,7 +23,7 @@ class DataWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       horizontalTitleGap: 0,
-      contentPadding: EdgeInsets.all(0),
+      contentPadding: const EdgeInsets.all(0),
       leading: Padding(
         padding: EdgeInsets.only(left: listItem.level * 30),
         child: IconButton(

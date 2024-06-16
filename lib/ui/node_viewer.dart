@@ -7,7 +7,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 class NodeViewer extends StatefulWidget {
   final Node node;
 
-  const NodeViewer({Key? key, required this.node}) : super(key: key);
+  const NodeViewer({super.key, required this.node});
 
   @override
   NodeViewerState createState() => NodeViewerState();
@@ -49,7 +49,7 @@ class NodeViewerState extends State<NodeViewer> {
         await Future.delayed(const Duration(milliseconds: 100));
         var contentNode = await _controller!
             .runJavaScriptReturningResult('window.getEditorContent();');
-        print('Content of editor: ${contentNode}');
+        print('Content of editor: $contentNode');
         if (contentNode is String) {
           Map<String, dynamic>? json = jsonDecode(contentNode);
           if (json != null) {
@@ -79,7 +79,7 @@ class NodeViewerState extends State<NodeViewer> {
                   //     "window.SET_EDITOR_PROPS('Something here123');  ");
                   _load();
                 },
-                child: Text('Run JavaScript'),
+                child: const Text('Run JavaScript'),
               )
             ])
           ])),
@@ -92,9 +92,7 @@ class WebViewCache {
   static WebViewController? _controller;
 
   static Future<String> loadHtml() async {
-    if (_htmlContent == null) {
-      _htmlContent = await rootBundle.loadString('assets/webview/index.html');
-    }
+    _htmlContent ??= await rootBundle.loadString('assets/webview/index.html');
     return _htmlContent!;
   }
 

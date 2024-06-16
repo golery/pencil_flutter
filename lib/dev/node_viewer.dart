@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class DevWebView extends StatefulWidget {
-  const DevWebView({Key? key}) : super(key: key);
+  const DevWebView({super.key});
 
   @override
   _NodeViewerState createState() => _NodeViewerState();
@@ -133,7 +133,7 @@ class _NodeViewerState extends State<DevWebView> {
   @override
   Widget build(BuildContext context) {
     if (_controller == null) {
-      return Text('Loading');
+      return const Text('Loading');
     }
 
     return Column(
@@ -161,12 +161,12 @@ class _NodeViewerState extends State<DevWebView> {
                 //     "window.SET_EDITOR_PROPS('Something here123');  ");
                 _load();
               },
-              child: Text('Run JavaScript'),
+              child: const Text('Run JavaScript'),
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             ElevatedButton(
               onPressed: () => _reload(),
-              child: Text('Reload'),
+              child: const Text('Reload'),
             ),
           ],
         ),

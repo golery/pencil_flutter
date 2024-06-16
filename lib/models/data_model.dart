@@ -83,7 +83,7 @@ class Node {
           title: json['title'],
           children: (json['children'] as List<dynamic>?)
                   ?.map((e) => e as int)
-                  ?.toList() ??
+                  .toList() ??
               <int>[]);
     } catch (e, stackTrace) {
       print('Failed to parse json: $json $e $stackTrace');
