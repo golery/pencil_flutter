@@ -43,35 +43,43 @@ class NodeViewerState extends State<NodeViewer> {
     }
 
     return PopScope(
+      canPop: false,
       onPopInvoked: (didPop) async {
+        // without delayed, it crashes to a blackscreen
+        await Future.delayed(const Duration(milliseconds: 100));
         var contentNode = await _controller!
             .runJavaScriptReturningResult('window.getEditorContent();');
         if (contentNode is String) {
           Map<String, dynamic> json = jsonDecode(contentNode);
           widget.node.title = json['title'];
           widget.node.text = json['text'];
-          print('aa ${widget.node}');
+          print('aa ${contentNode}');
         }
+
+        if (!context.mounted) return;
+        Navigator.of(context).pop();
       },
-      child: Column(
-        children: [
-          Expanded(
-            child: WebViewWidget(
-              controller: _controller!,
-            ),
+      child: Scaffold(
+          appBar: AppBar(
+            title: Text(widget.node.title ?? 'Node'),
           ),
-          Row(children: [
-            ElevatedButton(
-              onPressed: () {
-                // _controller?.runJavaScript(
-                //     "window.SET_EDITOR_PROPS('Something here123');  ");
-                _load();
-              },
-              child: Text('Run JavaScript'),
-            )
-          ]),
-        ],
-      ),
+          body: Column(children: [
+            Expanded(
+              child: WebViewWidget(
+                controller: _controller!,
+              ),
+            ),
+            Row(children: [
+              ElevatedButton(
+                onPressed: () {
+                  // _controller?.runJavaScript(
+                  //     "window.SET_EDITOR_PROPS('Something here123');  ");
+                  _load();
+                },
+                child: Text('Run JavaScript'),
+              )
+            ])
+          ])),
     );
   }
 }

@@ -24,16 +24,10 @@ class _HomeScreenState extends State<HomeScreen> {
           transitionDuration: Duration.zero,
           reverseTransitionDuration: Duration.zero,
           pageBuilder: (context, b, c) {
-            return Scaffold(
-                appBar: AppBar(
-                  title: Text(node.title ?? 'Node'),
-                ),
-                body: Column(children: [
-                  Expanded(child: NodeViewer(node: node)),
-                ]));
+            return NodeViewer(node: node);
           }),
     );
-    print('Rebuild ${node}');
+    print('Rebuild11 ${node.title}');
     dataProvider.rebuildListItems();
   }
 
