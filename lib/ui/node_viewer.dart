@@ -49,11 +49,13 @@ class NodeViewerState extends State<NodeViewer> {
         await Future.delayed(const Duration(milliseconds: 100));
         var contentNode = await _controller!
             .runJavaScriptReturningResult('window.getEditorContent();');
+        print('Content of editor: ${contentNode}');
         if (contentNode is String) {
-          Map<String, dynamic> json = jsonDecode(contentNode);
-          widget.node.title = json['title'];
-          widget.node.text = json['text'];
-          print('aa ${contentNode}');
+          Map<String, dynamic>? json = jsonDecode(contentNode);
+          if (json != null) {
+            widget.node.title = json['title'];
+            widget.node.text = json['text'];
+          }
         }
 
         if (!context.mounted) return;
