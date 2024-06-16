@@ -46,17 +46,18 @@ class _HomeScreenState extends State<HomeScreen> {
     return Column(
       children: [
         Expanded(
-          child: ListView.separated(
+          child: ReorderableListView.builder(
+            onReorder: (oldIndex, newIndex) => {},
             itemCount: dataProvider.treeListItems.length,
             itemBuilder: (context, index) {
               return DataWidget(
+                  key: Key('${dataProvider.treeListItems[index].nodeId}'),
                   listItem: dataProvider.treeListItems[index],
                   treeModel: dataProvider,
                   onPressed: (node) {
                     handleOpenNode(dataProvider, node);
                   });
             },
-            separatorBuilder: (context, index) => const Divider(),
           ),
         ),
       ],

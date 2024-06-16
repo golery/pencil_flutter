@@ -13,7 +13,11 @@ class DataWidget extends StatelessWidget {
   final TreeListItem listItem;
   final void Function(Node)? onPressed;
   final DataProvider treeModel;
-  DataWidget({required this.listItem, this.onPressed, required this.treeModel});
+  DataWidget(
+      {required super.key,
+      required this.listItem,
+      this.onPressed,
+      required this.treeModel});
 
   @override
   Widget build(BuildContext context) {
