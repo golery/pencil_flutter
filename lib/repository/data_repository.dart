@@ -39,4 +39,11 @@ class DataRepository {
     print('Added new node ${newNode.id}');
     return newNode;
   }
+
+  Future<void> moveNode(
+      NodeId nodeId, NodeId newParentId, int newPosition) async {
+    print('Moving node ${nodeId} to ${newParentId} at position ${newPosition}');
+    await apiService.moveNode(nodeId, newParentId, newPosition);
+    print('Moved node ${nodeId} to ${newParentId} at position ${newPosition}');
+  }
 }

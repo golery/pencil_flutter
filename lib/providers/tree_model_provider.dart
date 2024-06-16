@@ -189,7 +189,7 @@ class DataProvider with ChangeNotifier {
     await dataRepository.updateNode(node);
   }
 
-  reorder(int oldIndex, int newIndex) {
+  reorder(int oldIndex, int newIndex) async {
     var fromNode = _treeListItems[oldIndex];
     var fromParent = getParentNode(fromNode.nodeId);
     fromParent.children.remove(fromNode.nodeId);
@@ -199,5 +199,7 @@ class DataProvider with ChangeNotifier {
     var toChildIndex = toParent.children.indexOf(toNode.nodeId);
     toParent.children.insert(toChildIndex, fromNode.nodeId);
     rebuildListItems();
+
+    await dataRepository.moveNode(fromNode.nodeId, toParent.id, toChildIndex);
   }
 }

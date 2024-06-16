@@ -12,7 +12,7 @@ class ApiClient {
     return await http.get(url, headers: {"Authorization": "Bearer mock_token"});
   }
 
-  Future<http.Response> postRequest(String endpoint, Object? body) async {
+  Future<http.Response> postRequest(String endpoint, dynamic body) async {
     final bodyTxt = body == null ? null : jsonEncode(body);
     print('POST ${jsonEncode(bodyTxt)}');
     final url = Uri.parse('$baseUrl$endpoint');

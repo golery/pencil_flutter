@@ -80,4 +80,18 @@ class ApiService {
       throw Exception('Failed to delete node ${nodeId}');
     }
   }
+
+  Future<void> moveNode(
+      NodeId nodeId, NodeId newParentId, int newPosition) async {
+    var body = {'newParentId': newParentId, 'pos': newPosition};
+    final response =
+        await apiClient.postRequest('/api2/pencil/move/$nodeId', body);
+
+    if (response.statusCode == 200) {
+      print('Moved node. Response: ${response.body}');
+      return;
+    } else {
+      throw Exception('Failed to move node ${nodeId}');
+    }
+  }
 }
