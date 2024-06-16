@@ -47,7 +47,9 @@ class _HomeScreenState extends State<HomeScreen> {
       children: [
         Expanded(
           child: ReorderableListView.builder(
-            onReorder: (oldIndex, newIndex) => {},
+            onReorder: (oldIndex, newIndex) {
+              dataProvider.reorder(oldIndex, newIndex);
+            },
             itemCount: dataProvider.treeListItems.length,
             itemBuilder: (context, index) {
               return Container(

@@ -188,4 +188,16 @@ class DataProvider with ChangeNotifier {
   updateNode(Node node) async {
     await dataRepository.updateNode(node);
   }
+
+  reorder(int oldIndex, int newIndex) {
+    var fromNode = _treeListItems[oldIndex];
+    var fromParent = getParentNode(fromNode.nodeId);
+    fromParent.children.remove(fromNode.nodeId);
+
+    var toNode = _treeListItems[newIndex];
+    var toParent = getParentNode(toNode.nodeId);
+    var toChildIndex = toParent.children.indexOf(toNode.nodeId);
+    toParent.children.insert(toChildIndex, fromNode.nodeId);
+    rebuildListItems();
+  }
 }
