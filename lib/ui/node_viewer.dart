@@ -42,24 +42,36 @@ class NodeViewerState extends State<NodeViewer> {
       return const Center(child: CircularProgressIndicator());
     }
 
-    return Column(
-      children: [
-        Expanded(
-          child: WebViewWidget(
-            controller: _controller!,
+    return PopScope(
+      onPopInvoked: (didPop) async {
+        var contentNode = await _controller!
+            .runJavaScriptReturningResult('window.getEditorContent();');
+        if (contentNode is String) {
+          Map<String, dynamic> json = jsonDecode(contentNode);
+          widget.node.title = json['title'];
+          widget.node.text = json['text'];
+          print('aa ${widget.node}');
+        }
+      },
+      child: Column(
+        children: [
+          Expanded(
+            child: WebViewWidget(
+              controller: _controller!,
+            ),
           ),
-        ),
-        Row(children: [
-          ElevatedButton(
-            onPressed: () {
-              // _controller?.runJavaScript(
-              //     "window.SET_EDITOR_PROPS('Something here123');  ");
-              _load();
-            },
-            child: Text('Run JavaScript'),
-          )
-        ]),
-      ],
+          Row(children: [
+            ElevatedButton(
+              onPressed: () {
+                // _controller?.runJavaScript(
+                //     "window.SET_EDITOR_PROPS('Something here123');  ");
+                _load();
+              },
+              child: Text('Run JavaScript'),
+            )
+          ]),
+        ],
+      ),
     );
   }
 }

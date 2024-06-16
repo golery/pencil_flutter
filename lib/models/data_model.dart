@@ -57,8 +57,8 @@ class Book {
 class Node {
   final NodeId id;
   final String? name;
-  final String? text;
-  final String? title;
+  String? text;
+  String? title;
   final List<NodeId> children;
 
   Node({
@@ -71,7 +71,7 @@ class Node {
 
   @override
   String toString() {
-    return 'Node{id: $id, name: $name, text: $text}';
+    return 'Node{id: $id, name: $name, title: $title}';
   }
 
   factory Node.fromJson(Map<String, dynamic> json) {

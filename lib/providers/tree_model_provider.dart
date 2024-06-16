@@ -89,6 +89,10 @@ class DataProvider with ChangeNotifier {
     }
   }
 
+  void rebuildListItems() {
+    _regenerateListItems(_nodes, _book!.rootId);
+  }
+
   void _regenerateListItems(List<Node> nodes, NodeId rootId) {
     var root = _nodeIdToNode[rootId];
     if (root == null) {
@@ -111,7 +115,7 @@ class DataProvider with ChangeNotifier {
       print('No root Id');
       return;
     }
-    _regenerateListItems(_nodes, rootId!);
+    rebuildListItems();
   }
 
   TreeListItem getTreeListItem(Node node, int level, bool? isOpen) {
@@ -146,7 +150,7 @@ class DataProvider with ChangeNotifier {
     parent.children.insert(0, newNode.id);
     _openMap[nodeId] = true;
     print('Added node ${newNode.id}');
-    _regenerateListItems(nodes, _book!.rootId);
+    rebuildListItems();
   }
 
   Node getParentNode(NodeId nodeId) {

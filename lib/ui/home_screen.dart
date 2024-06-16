@@ -17,8 +17,8 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _showNodeViewer = false;
   Node? _node;
 
-  void handleOpenNode(Node node) {
-    Navigator.push(
+  void handleOpenNode(DataProvider dataProvider, Node node) async {
+    await Navigator.push(
       context,
       PageRouteBuilder(
           transitionDuration: Duration.zero,
@@ -33,6 +33,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ]));
           }),
     );
+    print('Rebuild ${node}');
+    dataProvider.rebuildListItems();
   }
 
   void handleSelectBook() {
@@ -56,7 +58,9 @@ class _HomeScreenState extends State<HomeScreen> {
               return DataWidget(
                   listItem: dataProvider.treeListItems[index],
                   treeModel: dataProvider,
-                  onPressed: handleOpenNode);
+                  onPressed: (node) {
+                    handleOpenNode(dataProvider, node);
+                  });
             },
             separatorBuilder: (context, index) => const Divider(),
           ),
