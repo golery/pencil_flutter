@@ -97,6 +97,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 onPressed: handleSelectBook,
                 child: Text(dataProvider.book?.name ?? ''),
               ),
+              actions: <Widget>[
+                IconButton(
+                  icon: const Icon(Icons.refresh),
+                  tooltip: 'Open shopping cart',
+                  onPressed: () {
+                    // handle the press
+                  },
+                ),
+              ],
             ),
             body: getBody(dataProvider),
             floatingActionButton: FloatingActionButton(
