@@ -13,8 +13,9 @@ class ApiService {
   ApiService({required this.apiClient});
 
   Future<List<DataModel>> fetchData() async {
+    print('Start fetching data');
     final response = await apiClient.getRequest('/data');
-
+    print('Done fetching data');
     if (response.statusCode == 200) {
       final List<dynamic> jsonResponse = json.decode(response.body);
       return jsonResponse.map((data) => DataModel.fromJson(data)).toList();
@@ -30,13 +31,15 @@ class ApiService {
       final List<dynamic> jsonResponse = json.decode(response.body);
       return jsonResponse.map((book) => Book.fromJson(book)).toList();
     } else {
-      throw Exception('Failed to load book lists');
+      throw Exception('Failed to load book lists ${response.statusCode}');
     }
   }
 
   Future<List<Node>> fetchNodes(NodeId bookId) async {
+    print('Fetch nodes for book');
     final response =
         await apiClient.getRequest('/api2/pencil/book/$bookId/node');
+    print('Done.Fetch nodes for book');
 
     if (response.statusCode == 200) {
       final List<dynamic> jsonResponse = json.decode(response.body);

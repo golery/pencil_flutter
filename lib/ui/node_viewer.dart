@@ -31,6 +31,7 @@ class NodeViewerState extends State<NodeViewer> {
     if (_controller == null) {
       _load();
     } else {
+      print('[EDITOR] Display ${widget.node}');
       _controller?.runJavaScript(
           "window.updateEditor({ node: ${jsonEncode(widget.node.toJson())}, edit: true});");
     }
@@ -49,13 +50,17 @@ class NodeViewerState extends State<NodeViewer> {
         await Future.delayed(const Duration(milliseconds: 100));
         var contentNode = await _controller!
             .runJavaScriptReturningResult('window.getEditorContent();');
-        print('Content of editor: $contentNode');
+        print('[EDITOR] Content of editor: $contentNode');
         if (contentNode is String) {
           Map<String, dynamic>? json = jsonDecode(contentNode);
-          if (json != null) {
+          if (json == null) {
+            print('[EDITOR] Failed update. Null json');
+          } else if (json['id'] == widget.node.id) {
             widget.node.title = json['title'];
             widget.node.name = json['title'];
             widget.node.text = json['text'];
+          } else {
+            print('[EDITOR]Failed update. Node mismtach ${widget.node}');
           }
         }
 
@@ -116,10 +121,11 @@ class WebViewCache {
               // Update loading bar.
             },
             onPageStarted: (String url) {},
-            onPageFinished: (String url) {
-              _controller?.runJavaScript(
-                  "window.updateEditor({ node: ${jsonEncode(node.toJson())}, edit: true});");
-            },
+            // onPageFinished: (String url) {
+            //   print('[EDITOR] Update ${node}');
+            //   _controller?.runJavaScript(
+            //       "window.updateEditor({ node: ${jsonEncode(node.toJson())}, edit: true});");
+            // },
             onHttpError: (HttpResponseError error) {},
             onWebResourceError: (WebResourceError error) {},
             onNavigationRequest: (NavigationRequest request) {
