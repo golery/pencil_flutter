@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 void main() {
   // debugPaintSizeEnabled = true;
 
-  final ApiClient apiClient = ApiClient(baseUrl: "https://pencil.golery.com");
+  final ApiClient apiClient = ApiClient();
   final ApiService apiService = ApiService(apiClient: apiClient);
   final DataRepository dataRepository = DataRepository(apiService: apiService);
 

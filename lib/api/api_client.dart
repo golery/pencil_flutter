@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ApiClient {
-  final String baseUrl;
+  final String baseUrl = "https://api.golery.com";
 
-  ApiClient({required this.baseUrl});
+  ApiClient();
 
   Future<http.Response> getRequest(String endpoint) async {
     final url = Uri.parse('$baseUrl$endpoint');
