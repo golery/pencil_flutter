@@ -11,5 +11,11 @@ adb devices
 # DEV
 Set IS_WIDGET_DEV = false in main.dart
 flutter run
+
+# Install release version
 flutter run --release
-F5 in vscode
+
+# ICON 
+1. Generate with https://pixcap.com/ , resize to 512x512
+2. Copy image to assets/icons/launcher.png
+3. Run flutter pub run flutter_launcher_icons
