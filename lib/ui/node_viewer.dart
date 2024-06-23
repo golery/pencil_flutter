@@ -15,6 +15,7 @@ class NodeViewer extends StatefulWidget {
 
 class NodeViewerState extends State<NodeViewer> {
   WebViewController? _controller;
+  bool _isEditing = false;
 
   Future<void> _load() async {
     var load = await WebViewCache.loadController(widget.node);
@@ -68,26 +69,35 @@ class NodeViewerState extends State<NodeViewer> {
         Navigator.of(context).pop(widget.node);
       },
       child: Scaffold(
-          appBar: AppBar(
-            title: Text(widget.node.title ?? 'Node'),
-          ),
-          body: Column(children: [
-            Expanded(
-              child: WebViewWidget(
-                controller: _controller!,
-              ),
+        appBar: AppBar(
+          title: Text(widget.node.title ?? 'Node'),
+        ),
+        body: Column(children: [
+          Expanded(
+            child: WebViewWidget(
+              controller: _controller!,
             ),
-            Row(children: [
-              ElevatedButton(
-                onPressed: () {
-                  // _controller?.runJavaScript(
-                  //     "window.SET_EDITOR_PROPS('Something here123');  ");
-                  _load();
-                },
-                child: const Text('Run JavaScript'),
-              )
-            ])
-          ])),
+          ),
+          Row(children: [
+            ElevatedButton(
+              onPressed: () {
+                // _controller?.runJavaScript(
+                //     "window.SET_EDITOR_PROPS('Something here123');  ");
+                _load();
+              },
+              child: const Text('Run JavaScript'),
+            )
+          ])
+        ]),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            setState(() {
+              _isEditing = !_isEditing;
+            });
+          },
+          child: Icon(_isEditing ? Icons.done : Icons.edit),
+        ),
+      ),
     );
   }
 }
