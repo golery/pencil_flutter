@@ -25,6 +25,15 @@ class NodeViewerState extends State<NodeViewer> {
     });
   }
 
+  Future<void> _loadNode() async {
+    print('[EDITOR] Display ${widget.node}');
+    setState(() {
+      _isEditing = false;
+    });
+    await _controller?.runJavaScript(
+        "window.updateEditor({ node: ${jsonEncode(widget.node.toJson())}, edit: false});");
+  }
+
   @override
   void initState() {
     super.initState();
@@ -32,9 +41,7 @@ class NodeViewerState extends State<NodeViewer> {
     if (_controller == null) {
       _load();
     } else {
-      print('[EDITOR] Display ${widget.node}');
-      _controller?.runJavaScript(
-          "window.updateEditor({ node: ${jsonEncode(widget.node.toJson())}, edit: true});");
+      _loadNode();
     }
   }
 
@@ -78,21 +85,14 @@ class NodeViewerState extends State<NodeViewer> {
               controller: _controller!,
             ),
           ),
-          Row(children: [
-            ElevatedButton(
-              onPressed: () {
-                // _controller?.runJavaScript(
-                //     "window.SET_EDITOR_PROPS('Something here123');  ");
-                _load();
-              },
-              child: const Text('Run JavaScript'),
-            )
-          ])
         ]),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             setState(() {
               _isEditing = !_isEditing;
+              print('Set editing $_isEditing');
+              _controller!
+                  .runJavaScriptReturningResult('window.setEdit($_isEditing);');
             });
           },
           child: Icon(_isEditing ? Icons.done : Icons.edit),
@@ -127,15 +127,6 @@ class WebViewCache {
         )
         ..setNavigationDelegate(
           NavigationDelegate(
-            onProgress: (int progress) {
-              // Update loading bar.
-            },
-            onPageStarted: (String url) {},
-            // onPageFinished: (String url) {
-            //   print('[EDITOR] Update ${node}');
-            //   _controller?.runJavaScript(
-            //       "window.updateEditor({ node: ${jsonEncode(node.toJson())}, edit: true});");
-            // },
             onHttpError: (HttpResponseError error) {},
             onWebResourceError: (WebResourceError error) {},
             onNavigationRequest: (NavigationRequest request) {
