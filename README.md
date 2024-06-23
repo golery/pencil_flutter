@@ -17,5 +17,6 @@ flutter run --release
 
 # ICON 
 1. Generate with https://pixcap.com/ , resize to 512x512
-2. Copy image to assets/icons/launcher.png
+   https://app.recraft.ai/
+2. Copy image to C:\repos\pencil_flutter\assets\icons\launcher.png
 3. Run flutter pub run flutter_launcher_icons
