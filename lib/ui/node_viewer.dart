@@ -19,8 +19,8 @@ class NodeViewerState extends State<NodeViewer> {
   bool _isEditing = false;
 
   Future<void> _load() async {
-    var load = await EditorWebView.load(onEditorReady: (editor) {
-      editor.updateEditor(widget.node);
+    var load = await EditorWebView.load(onEditorReady: (editor) async {
+      await editor.updateEditor(widget.node);
     });
 
     setState(() {

@@ -7,13 +7,13 @@ class EditorWebView {
   static EditorWebView? _singleton;
 
   static Future<EditorWebView> load(
-      {required void Function(EditorWebView) onEditorReady}) async {
+      {required Future<void> Function(EditorWebView) onEditorReady}) async {
     if (EditorWebView._singleton == null) {
       final EditorWebView webView = EditorWebView();
       await webView.init(onEditorReady: onEditorReady);
       EditorWebView._singleton = webView;
     } else {
-      onEditorReady(EditorWebView._singleton!);
+      await onEditorReady(EditorWebView._singleton!);
     }
 
     return EditorWebView._singleton!;
@@ -21,7 +21,7 @@ class EditorWebView {
 
   late WebViewController? _controller;
 
-  init({required void Function(EditorWebView) onEditorReady}) async {
+  init({required Future<void> Function(EditorWebView) onEditorReady}) async {
     String htmlContent =
         await rootBundle.loadString('assets/webview/index.html');
 
@@ -32,7 +32,7 @@ class EditorWebView {
         onMessageReceived: (JavaScriptMessage message) async {
           print('[WEBVIEW] Received message: ${message.message}');
           if (message.message == 'onEditorReady') {
-            onEditorReady(this);
+            await onEditorReady(this);
           }
         },
       )
