@@ -12,6 +12,7 @@ Hint: Turn on USB debug - it helps to keep conneciton even if screen is locked
 
 # DEV
 Set IS_WIDGET_DEV = false in main.dart
+Or set it to true and modify the page in dev.dart
 flutter run
 
 # Install release version

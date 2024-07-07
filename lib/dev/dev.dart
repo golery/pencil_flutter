@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pencil_flutter/dev/dev_resuse_webview_with_router.dart';
+import 'package:pencil_flutter/dev/dev_web_view.dart';
 
 class DevWidget extends StatelessWidget {
   const DevWidget({super.key});
@@ -10,7 +11,7 @@ class DevWidget extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Dev'),
       ),
-      body: const DevScreen(),
+      body: const DevWebView(),
     );
   }
 }

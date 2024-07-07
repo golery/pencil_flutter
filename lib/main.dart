@@ -9,6 +9,8 @@ import 'package:pencil_flutter/dev/dev.dart';
 import 'package:pencil_flutter/ui/home_screen.dart';
 import 'package:provider/provider.dart';
 
+const IS_WIDGET_DEV = false;
+
 void main() {
   // debugPaintSizeEnabled = true;
 
@@ -18,8 +20,6 @@ void main() {
 
   runApp(MyApp(dataRepository: dataRepository));
 }
-
-const IS_WIDGET_DEV = false;
 
 class MyApp extends StatelessWidget {
   final DataRepository dataRepository;

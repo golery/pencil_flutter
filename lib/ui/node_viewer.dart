@@ -125,7 +125,7 @@ class WebViewCache {
             print('[WEBVIEW] Received message: ${message.message}');
             if (message.message == 'onEditorReady') {
               await _controller?.runJavaScript(
-                  "window.updateEditor({ node: ${jsonEncode(node.toJson())}, edit: false});");
+                  "window.editor.updateEditor({ node: ${jsonEncode(node.toJson())}, edit: false});");
             }
           },
         )

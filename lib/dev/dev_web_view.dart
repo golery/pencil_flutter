@@ -48,7 +48,7 @@ class _NodeViewerState extends State<DevWebView> {
 <body>
     <div class="root">
         <h1>Welcome to the Full-Height Webpage</h1>
-        <button onClick="FlutterEditorChannel.postMessage('Hello')">Post message</button>
+        <button onClick="window.FlutterEditorChannel.postMessage('Hello')">Post message</button>
         <div class="scroll">
             <h2>Welcome to the Full-Height Webpage323</h2>
             <h2>Welcome to the Full-Height Webpage323</h2>
@@ -86,7 +86,7 @@ class _NodeViewerState extends State<DevWebView> {
       ..addJavaScriptChannel(
         'FlutterEditorChannel',
         onMessageReceived: (JavaScriptMessage message) {
-          print(message.message);
+          print('[WEBVIEW] Received message: ${message.message}');
         },
       )
       ..setNavigationDelegate(
