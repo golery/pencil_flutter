@@ -31,7 +31,7 @@ class NodeViewerState extends State<NodeViewer> {
       _isEditing = false;
     });
     await _controller?.runJavaScript(
-        "window.updateEditor({ node: ${jsonEncode(widget.node.toJson())}, edit: false});");
+        "window.editor.updateEditor({ node: ${jsonEncode(widget.node.toJson())}, edit: false});");
   }
 
   @override
@@ -57,7 +57,7 @@ class NodeViewerState extends State<NodeViewer> {
         // without delayed, it crashes to a blackscreen
         await Future.delayed(const Duration(milliseconds: 100));
         var contentNode = await _controller!
-            .runJavaScriptReturningResult('window.getEditorContent();');
+            .runJavaScriptReturningResult('window.editor.getEditorContent();');
         print('[EDITOR] Content of editor: $contentNode');
         if (contentNode is String) {
           Map<String, dynamic>? json = jsonDecode(contentNode);
@@ -91,8 +91,8 @@ class NodeViewerState extends State<NodeViewer> {
             setState(() {
               _isEditing = !_isEditing;
               print('Set editing $_isEditing');
-              _controller!
-                  .runJavaScriptReturningResult('window.setEdit($_isEditing);');
+              _controller!.runJavaScriptReturningResult(
+                  'window.editor.setEdit($_isEditing);');
             });
           },
           child: Icon(_isEditing ? Icons.done : Icons.edit),
@@ -121,8 +121,12 @@ class WebViewCache {
         ..setJavaScriptMode(JavaScriptMode.unrestricted)
         ..addJavaScriptChannel(
           'FlutterEditorChannel',
-          onMessageReceived: (JavaScriptMessage message) {
-            print(message.message);
+          onMessageReceived: (JavaScriptMessage message) async {
+            print('[WEBVIEW] Received message: ${message.message}');
+            if (message.message == 'onEditorReady') {
+              await _controller?.runJavaScript(
+                  "window.updateEditor({ node: ${jsonEncode(node.toJson())}, edit: false});");
+            }
           },
         )
         ..setNavigationDelegate(
@@ -136,7 +140,10 @@ class WebViewCache {
               return NavigationDecision.navigate;
             },
           ),
-        );
+        )
+        ..setOnConsoleMessage((consoleMessage) {
+          print('[EDITOR_CONSOLE]: ${consoleMessage.message}');
+        });
       await _controller!.enableZoom(false);
       await _controller!.loadHtmlString(await WebViewCache.loadHtml());
       _htmlContent = await rootBundle.loadString('assets/webview/index.html');
