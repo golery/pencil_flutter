@@ -4,7 +4,7 @@ import 'package:pencil_flutter/api/api_service.dart';
 import 'package:pencil_flutter/models/data_model.dart';
 import 'package:pencil_flutter/models/tree_model.dart';
 
-final bool DEV_NO_UPDATE = true;
+final bool DEV_NO_UPDATE = false;
 
 class DataRepository {
   final ApiService apiService;
@@ -26,6 +26,7 @@ class DataRepository {
   Future<void> updateNode(Node node) async {
     print('Updating node ${node.id}: $node');
     if (DEV_NO_UPDATE) {
+      print('Skipping updating due to DEV_NO_UPDATE=true');
       return;
     }
     await apiService.updateNode(node);

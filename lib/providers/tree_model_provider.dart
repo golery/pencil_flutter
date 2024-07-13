@@ -1,6 +1,5 @@
 // providers/data_provider.dart
 
-
 import 'package:flutter/material.dart';
 import 'package:pencil_flutter/models/data_model.dart';
 import 'package:pencil_flutter/models/tree_model.dart';
@@ -77,8 +76,7 @@ class DataProvider with ChangeNotifier {
       return;
     }
     if (level >= 0) {
-      bool? isOpen =
-          node.children.isEmpty ? null : (_openMap[nodeId] ?? false);
+      bool? isOpen = node.children.isEmpty ? null : (_openMap[nodeId] ?? false);
       listItems.add(getTreeListItem(node, level, isOpen));
     }
     if (_openMap[nodeId] == true) {
@@ -186,6 +184,7 @@ class DataProvider with ChangeNotifier {
 
   updateNode(Node node) async {
     await dataRepository.updateNode(node);
+    print('Updated node ${node}');
   }
 
   reorder(int oldIndex, int newIndex) async {

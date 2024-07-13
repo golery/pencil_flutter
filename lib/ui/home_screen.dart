@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
           }),
     );
     dataProvider.rebuildListItems();
-    dataProvider.updateNode(node);
+    await dataProvider.updateNode(node);
   }
 
   void handleSelectBook() {
@@ -107,6 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
+            backgroundColor: Colors.white,
             body: getBody(dataProvider),
             floatingActionButton: FloatingActionButton(
               onPressed: () {

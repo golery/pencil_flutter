@@ -13,6 +13,7 @@ class EditorWebView {
       await webView.init(onEditorReady: onEditorReady);
       EditorWebView._singleton = webView;
     } else {
+      print('Reusing webview');
       await onEditorReady(EditorWebView._singleton!);
     }
 
