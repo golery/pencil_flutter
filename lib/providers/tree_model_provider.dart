@@ -184,7 +184,7 @@ class DataProvider with ChangeNotifier {
 
   updateNode(Node node) async {
     await dataRepository.updateNode(node);
-    print('Updated node ${node}');
+    print('Updated node $node');
   }
 
   reorder(int oldIndex, int newIndex) async {
