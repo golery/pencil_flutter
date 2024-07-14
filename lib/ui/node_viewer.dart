@@ -41,32 +41,54 @@ class NodeViewerState extends State<NodeViewer> {
       return const Center(child: CircularProgressIndicator());
     }
 
+    saveAndCloseEditor() async {
+      var contentNode = await _editorWebView?.getEditorContent();
+      print('[EDITOR] Content of editor: $contentNode');
+      if (contentNode is String) {
+        Map<String, dynamic>? json = jsonDecode(contentNode);
+        if (json == null) {
+          print('[EDITOR] Failed update. Null json');
+        } else if (json['id'] == widget.node.id) {
+          widget.node.title = json['title'];
+          widget.node.name = json['title'];
+          widget.node.text = json['text'];
+        } else {
+          print('[EDITOR]Failed update. Node mismtach ${widget.node}');
+        }
+      }
+      _editorWebView?.setEdit(false);
+
+      setState(() {
+        _isEditing = false;
+      });
+    }
+
+    toggleEditor() async {
+      if (!_isEditing) {
+        _editorWebView?.setEdit(true);
+        setState(() {
+          _isEditing = true;
+        });
+      } else {
+        await saveAndCloseEditor();
+      }
+    }
+
     return PopScope(
       canPop: false,
       onPopInvoked: (didPop) async {
         // without delayed, it crashes to a blackscreen
         await Future.delayed(const Duration(milliseconds: 100));
-        var contentNode = await _editorWebView?.getEditorContent();
-        print('[EDITOR] Content of editor: $contentNode');
-        if (contentNode is String) {
-          Map<String, dynamic>? json = jsonDecode(contentNode);
-          if (json == null) {
-            print('[EDITOR] Failed update. Null json');
-          } else if (json['id'] == widget.node.id) {
-            widget.node.title = json['title'];
-            widget.node.name = json['title'];
-            widget.node.text = json['text'];
-          } else {
-            print('[EDITOR]Failed update. Node mismtach ${widget.node}');
-          }
-        }
 
+        if (_isEditing) {
+          await saveAndCloseEditor();
+        }
         if (!context.mounted) return;
         Navigator.of(context).pop(widget.node);
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(widget.node.title ?? 'Node'),
+          title: Text(_isEditing ? 'Edit' : (widget.node.title ?? 'Node')),
         ),
         body: Column(children: [
           Expanded(
@@ -74,13 +96,7 @@ class NodeViewerState extends State<NodeViewer> {
           ),
         ]),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            setState(() {
-              _isEditing = !_isEditing;
-              print('Set editing $_isEditing');
-              _editorWebView?.setEdit(_isEditing);
-            });
-          },
+          onPressed: toggleEditor,
           child: Icon(_isEditing ? Icons.done : Icons.edit),
         ),
       ),
