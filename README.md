@@ -23,3 +23,6 @@ flutter run --release
    Crop so that icon take all space (Android will add extra padding) and resize to 512x512
 2. Copy image to C:\repos\pencil_flutter\assets\icons\launcher.png
 3. Run flutter pub run flutter_launcher_icons
+
+# EMULATOR
+1. Run LDPlayer, Settings > AdbConnection

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:pencil_flutter/models/data_model.dart';
+import 'package:pencil_flutter/models/tree_model.dart';
 import 'package:pencil_flutter/providers/tree_model_provider.dart';
 import 'package:pencil_flutter/ui/bottom_sheet_menu.dart';
 import 'package:pencil_flutter/ui/node_viewer.dart';
@@ -11,12 +12,16 @@ final GlobalKey<NodeViewerState> _formKey = GlobalKey<NodeViewerState>();
 
 class DataWidget extends StatelessWidget {
   final TreeListItem listItem;
-  final void Function(Node)? onPressed;
+  final void Function(Node) onOpenNode;
+  final void Function(NodeId) onAddNode;
+  final void Function(NodeId) onRemoveNode;
   final DataProvider treeModel;
   const DataWidget(
       {required super.key,
       required this.listItem,
-      this.onPressed,
+      required this.onOpenNode,
+      required this.onAddNode,
+      required this.onRemoveNode,
       required this.treeModel});
 
   @override
@@ -50,9 +55,8 @@ class DataWidget extends StatelessWidget {
             context: context,
             builder: (context) {
               return BottomSheetMenu(
-                  onAdd: () async => {treeModel.addNewNode(listItem.nodeId)},
-                  onRemove: () async =>
-                      {treeModel.deleteNode(listItem.nodeId)});
+                  onAdd: () async => {onAddNode(listItem.nodeId)},
+                  onRemove: () async => {onRemoveNode(listItem.nodeId)});
             },
             isDismissible: true,
           );
@@ -62,8 +66,8 @@ class DataWidget extends StatelessWidget {
         onTap: () {
           final treeModel = Provider.of<DataProvider>(context, listen: false);
           final node = treeModel.findNodeByIdOpt(listItem.nodeId);
-          if (node != null && onPressed != null) {
-            onPressed!(node);
+          if (node != null && onOpenNode != null) {
+            onOpenNode!(node);
             // Navigator.push(
             //   context,
             //   MaterialPageRoute(

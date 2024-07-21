@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:pencil_flutter/models/data_model.dart';
+import 'package:pencil_flutter/models/tree_model.dart';
 import 'package:pencil_flutter/providers/tree_model_provider.dart';
 import 'package:pencil_flutter/ui/data_widget.dart';
 import 'package:pencil_flutter/ui/node_viewer.dart';
@@ -45,6 +46,18 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget getBody(DataProvider dataProvider) {
+    void onOpenNode(Node node) {
+      handleOpenNode(dataProvider, node);
+    }
+
+    void onAddNode(NodeId nodeId) {
+      dataProvider.addNewNode(nodeId);
+    }
+
+    void onRemoveNode(NodeId nodeId) {
+      dataProvider.deleteNode(nodeId);
+    }
+
     return Column(
       children: [
         Expanded(
@@ -62,12 +75,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   child: DataWidget(
-                      key: Key('${dataProvider.treeListItems[index].nodeId}'),
-                      listItem: dataProvider.treeListItems[index],
-                      treeModel: dataProvider,
-                      onPressed: (node) {
-                        handleOpenNode(dataProvider, node);
-                      }));
+                    key: Key('${dataProvider.treeListItems[index].nodeId}'),
+                    listItem: dataProvider.treeListItems[index],
+                    treeModel: dataProvider,
+                    onOpenNode: onOpenNode,
+                    onAddNode: onAddNode,
+                    onRemoveNode: onRemoveNode,
+                  ));
             },
           ),
         ),
@@ -75,10 +89,14 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  void _refresh() async {
+    await context.read<DataProvider>().loadBoook(3);
+  }
+
   @override
   void initState() {
     super.initState();
-    context.read<DataProvider>().loadBoook(3);
+    _refresh();
   }
 
   @override
@@ -100,10 +118,8 @@ class _HomeScreenState extends State<HomeScreen> {
               actions: <Widget>[
                 IconButton(
                   icon: const Icon(Icons.refresh),
-                  tooltip: 'Open shopping cart',
-                  onPressed: () {
-                    // handle the press
-                  },
+                  tooltip: 'Refresh',
+                  onPressed: _refresh,
                 ),
               ],
             ),
@@ -120,59 +136,4 @@ class _HomeScreenState extends State<HomeScreen> {
       },
     );
   }
-}
-
-class _ModalState extends State<Modal> {
-  bool isVisible = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Visibility(
-      visible: isVisible,
-      child: Stack(
-        children: [
-          GestureDetector(
-            onTap: () {
-              isVisible = false;
-              setState(() {});
-            },
-            child: Container(
-              color: Colors.black.withOpacity(0.5),
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-            ),
-          ),
-          Positioned(
-            bottom: 20,
-            left: 0,
-            right: 0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.add),
-                  onPressed: () {
-                    // Add your onPressed logic here
-                  },
-                ),
-                IconButton(
-                  icon: const Icon(Icons.remove),
-                  onPressed: () {
-                    // Add your onPressed logic here
-                  },
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class Modal extends StatefulWidget {
-  const Modal({super.key});
-
-  @override
-  _ModalState createState() => _ModalState();
 }
