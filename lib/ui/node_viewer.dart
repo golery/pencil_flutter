@@ -5,8 +5,11 @@ import 'package:pencil_flutter/ui/editor_webview.dart';
 
 class NodeViewer extends StatefulWidget {
   final Node node;
+  // After a new node is added, nodeview is opened in edit mode
+  final bool isOpenInEditMode;
 
-  const NodeViewer({super.key, required this.node});
+  const NodeViewer(
+      {super.key, required this.node, required this.isOpenInEditMode});
 
   @override
   NodeViewerState createState() => NodeViewerState();

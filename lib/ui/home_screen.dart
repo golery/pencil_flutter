@@ -20,20 +20,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final bool _showNodeViewer = false;
   Node? _node;
 
-  Future<void> handleOpenNode(DataProvider dataProvider, Node node) async {
-    await Navigator.push(
-      context,
-      PageRouteBuilder(
-          transitionDuration: Duration.zero,
-          reverseTransitionDuration: Duration.zero,
-          pageBuilder: (context, b, c) {
-            return NodeViewer(node: node);
-          }),
-    );
-    dataProvider.rebuildListItems();
-    await dataProvider.updateNode(node);
-  }
-
   void handleSelectBook() {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return Scaffold(
@@ -46,6 +32,21 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget getBody(DataProvider dataProvider) {
+    Future<void> handleOpenNode(
+        DataProvider dataProvider, Node node, bool isOpenInEditMode) async {
+      await Navigator.push(
+        context,
+        PageRouteBuilder(
+            transitionDuration: Duration.zero,
+            reverseTransitionDuration: Duration.zero,
+            pageBuilder: (context, b, c) {
+              return NodeViewer(node: node, isOpenInEditMode: isOpenInEditMode);
+            }),
+      );
+      dataProvider.rebuildListItems();
+      await dataProvider.updateNode(node);
+    }
+
     void onOpenNode(NodeId nodeId) async {
       final node = dataProvider.findNodeByIdOpt(nodeId);
       if (node == null) return;
