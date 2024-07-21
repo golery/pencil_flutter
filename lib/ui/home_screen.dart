@@ -20,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final bool _showNodeViewer = false;
   Node? _node;
 
-  void handleOpenNode(DataProvider dataProvider, Node node) async {
+  Future<void> handleOpenNode(DataProvider dataProvider, Node node) async {
     await Navigator.push(
       context,
       PageRouteBuilder(
@@ -46,16 +46,19 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget getBody(DataProvider dataProvider) {
-    void onOpenNode(Node node) {
-      handleOpenNode(dataProvider, node);
+    void onOpenNode(NodeId nodeId) async {
+      final node = dataProvider.findNodeByIdOpt(nodeId);
+      if (node == null) return;
+      await handleOpenNode(dataProvider, node);
     }
 
-    void onAddNode(NodeId nodeId) {
-      dataProvider.addNewNode(nodeId);
+    void onAddNode(NodeId nodeId) async {
+      final node = await dataProvider.addNewNode(nodeId);
+      await handleOpenNode(dataProvider, node);
     }
 
-    void onRemoveNode(NodeId nodeId) {
-      dataProvider.deleteNode(nodeId);
+    void onRemoveNode(NodeId nodeId) async {
+      await dataProvider.deleteNode(nodeId);
     }
 
     return Column(

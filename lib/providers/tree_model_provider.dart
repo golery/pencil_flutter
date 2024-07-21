@@ -133,7 +133,7 @@ class DataProvider with ChangeNotifier {
     return node;
   }
 
-  addNewNode(NodeId nodeId) async {
+  Future<Node> addNewNode(NodeId nodeId) async {
     Node parent = getNodeById(nodeId);
     Node newNode = await dataRepository.addNewNode(parent.id, 0);
     _nodes.add(newNode);
@@ -142,6 +142,7 @@ class DataProvider with ChangeNotifier {
     _openMap[nodeId] = true;
     print('Added node ${newNode.id}');
     rebuildListItems();
+    return newNode;
   }
 
   Node getParentNode(NodeId nodeId) {

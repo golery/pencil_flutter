@@ -12,7 +12,7 @@ final GlobalKey<NodeViewerState> _formKey = GlobalKey<NodeViewerState>();
 
 class DataWidget extends StatelessWidget {
   final TreeListItem listItem;
-  final void Function(Node) onOpenNode;
+  final void Function(NodeId) onOpenNode;
   final void Function(NodeId) onAddNode;
   final void Function(NodeId) onRemoveNode;
   final DataProvider treeModel;
@@ -64,19 +64,7 @@ class DataWidget extends StatelessWidget {
       ),
       title: GestureDetector(
         onTap: () {
-          final treeModel = Provider.of<DataProvider>(context, listen: false);
-          final node = treeModel.findNodeByIdOpt(listItem.nodeId);
-          if (node != null && onOpenNode != null) {
-            onOpenNode!(node);
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) {
-            //       return NodeViewer(key: _formKey, node: node);
-            //     },
-            //   ),
-            // );
-          }
+          onOpenNode(listItem.nodeId);
         },
         child: Text(listItem.title),
       ),
