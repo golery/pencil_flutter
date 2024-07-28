@@ -21,7 +21,8 @@ class NodeViewerState extends State<NodeViewer> {
 
   Future<void> _load() async {
     var load = await EditorWebView.load(onEditorReady: (editor) async {
-      await editor.updateEditor(widget.node);
+      _isEditing = widget.isOpenInEditMode;
+      await editor.updateEditor(widget.node, widget.isOpenInEditMode);
     });
 
     setState(() {
@@ -33,6 +34,7 @@ class NodeViewerState extends State<NodeViewer> {
   void initState() {
     super.initState();
 
+    _isEditing = widget.isOpenInEditMode;
     _load();
   }
 
@@ -98,7 +100,7 @@ class NodeViewerState extends State<NodeViewer> {
         ]),
         floatingActionButton: FloatingActionButton(
           onPressed: toggleEditor,
-          child: Icon(_isEditing ? Icons.done : Icons.edit),
+          child: Icon(_isEditing ? Icons.save : Icons.edit),
         ),
       ),
     );

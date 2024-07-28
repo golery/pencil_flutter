@@ -50,12 +50,12 @@ class _HomeScreenState extends State<HomeScreen> {
     void onOpenNode(NodeId nodeId) async {
       final node = dataProvider.findNodeByIdOpt(nodeId);
       if (node == null) return;
-      await handleOpenNode(dataProvider, node);
+      await handleOpenNode(dataProvider, node, false);
     }
 
     void onAddNode(NodeId nodeId) async {
       final node = await dataProvider.addNewNode(nodeId);
-      await handleOpenNode(dataProvider, node);
+      await handleOpenNode(dataProvider, node, true);
     }
 
     void onRemoveNode(NodeId nodeId) async {

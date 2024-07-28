@@ -48,10 +48,10 @@ class EditorWebView {
     return WebViewWidget(controller: _controller!);
   }
 
-  updateEditor(Node node) {
+  updateEditor(Node node, bool edit) {
     print('Update editor');
     _controller?.runJavaScript(
-        "window.editor.updateEditor({ node: ${jsonEncode(node.toJson())}, edit: false});");
+        "window.editor.updateEditor({ node: ${jsonEncode(node.toJson())}, edit: $edit});");
   }
 
   getEditorContent() {
