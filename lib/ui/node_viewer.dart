@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:pencil_flutter/models/data_model.dart';
+import 'package:pencil_flutter/providers/tree_model_provider.dart';
 import 'package:pencil_flutter/ui/editor_webview.dart';
+import 'package:provider/provider.dart';
 
 class NodeViewer extends StatefulWidget {
   final Node node;
@@ -18,6 +20,7 @@ class NodeViewer extends StatefulWidget {
 class NodeViewerState extends State<NodeViewer> {
   EditorWebView? _editorWebView;
   bool _isEditing = false;
+  late Node parent;
 
   Future<void> _load() async {
     var load = await EditorWebView.load(onEditorReady: (editor) async {
@@ -33,6 +36,9 @@ class NodeViewerState extends State<NodeViewer> {
   @override
   void initState() {
     super.initState();
+
+    final dataProvider = Provider.of<DataProvider>(context, listen: false);
+    parent = dataProvider.getParentNode(widget.node.id);
 
     _isEditing = widget.isOpenInEditMode;
     _load();
@@ -91,7 +97,7 @@ class NodeViewerState extends State<NodeViewer> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(_isEditing ? 'Edit' : (widget.node.title ?? 'Node')),
+          title: Text(_isEditing ? 'Edit' : (parent.title ?? 'Node')),
         ),
         body: Column(children: [
           Expanded(

@@ -9,7 +9,8 @@ import 'package:pencil_flutter/dev/dev.dart';
 import 'package:pencil_flutter/ui/home_screen.dart';
 import 'package:provider/provider.dart';
 
-const IS_WIDGET_DEV = false;
+// Show dev widget as a playground rather than app
+const isDevWidget = false;
 
 void main() {
   // debugPaintSizeEnabled = true;
@@ -18,13 +19,13 @@ void main() {
   final ApiService apiService = ApiService(apiClient: apiClient);
   final DataRepository dataRepository = DataRepository(apiService: apiService);
 
-  runApp(MyApp(dataRepository: dataRepository));
+  runApp(PencilApp(dataRepository: dataRepository));
 }
 
-class MyApp extends StatelessWidget {
+class PencilApp extends StatelessWidget {
   final DataRepository dataRepository;
 
-  const MyApp({super.key, required this.dataRepository});
+  const PencilApp({super.key, required this.dataRepository});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
           title: 'Pencil',
           home: Scaffold(
             body: SafeArea(
-              child: IS_WIDGET_DEV ? DevWidget() : HomeScreen(),
+              child: isDevWidget ? DevWidget() : HomeScreen(),
             ),
           ),
         ));
