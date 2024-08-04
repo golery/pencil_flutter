@@ -115,9 +115,13 @@ class _HomeScreenState extends State<HomeScreen> {
         } else {
           return Scaffold(
             appBar: AppBar(
-              title: ElevatedButton(
+              title: TextButton(
                 onPressed: handleSelectBook,
-                child: Text(dataProvider.book?.name ?? ''),
+                child: Row(children: [
+                  const Icon(Icons.file_copy),
+                  const SizedBox(width: 5),
+                  Text(dataProvider.book?.name ?? '')
+                ]),
               ),
               actions: <Widget>[
                 IconButton(

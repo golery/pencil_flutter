@@ -1,6 +1,7 @@
 import 'package:pencil_flutter/models/data_model.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:flutter/services.dart';
+import 'package:pencil_flutter/utils/constants.dart';
 import 'dart:convert';
 
 class EditorWebView {
@@ -28,6 +29,12 @@ class EditorWebView {
 
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setNavigationDelegate(NavigationDelegate(
+        onPageFinished: (url) {
+          _controller!
+              .runJavaScript("window.initEditor({ imageHost: '$imageHost'});");
+        },
+      ))
       ..addJavaScriptChannel(
         'FlutterEditorChannel',
         onMessageReceived: (JavaScriptMessage message) async {

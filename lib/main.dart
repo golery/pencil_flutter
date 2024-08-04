@@ -35,9 +35,14 @@ class PencilApp extends StatelessWidget {
               create: (context) =>
                   DataProvider(dataRepository: dataRepository)),
         ],
-        child: const MaterialApp(
+        child: MaterialApp(
           title: 'Pencil',
-          home: Scaffold(
+          theme: ThemeData(
+            colorScheme:
+                ColorScheme.fromSeed(seedColor: const Color(0xFF75A47F)),
+            appBarTheme: const AppBarTheme(backgroundColor: Color(0xFFDFEFD3)),
+          ),
+          home: const Scaffold(
             body: SafeArea(
               child: isDevWidget ? DevWidget() : HomeScreen(),
             ),
