@@ -14,18 +14,22 @@ class SelectBookScreen extends StatefulWidget {
 class _SelectBookScreenState extends State<SelectBookScreen> {
   Widget getBody(DataProvider dataProvider) {
     var books = dataProvider.bookList ?? [];
-    return ListView.separated(
+    return ListView.builder(
       itemCount: books.length,
       itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(books[index].name),
-          onTap: () async {
-            await dataProvider.loadBoook(books[index].id);
-            Navigator.pop(context);
-          },
+        return Card(
+          clipBehavior: Clip.hardEdge,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+          child: InkWell(
+              onTap: () async {
+                await dataProvider.loadBoook(books[index].id);
+                Navigator.pop(context);
+              },
+              child: SizedBox(
+                  height: 50, child: Center(child: Text(books[index].name)))),
         );
       },
-      separatorBuilder: (context, index) => const Divider(),
     );
   }
 
