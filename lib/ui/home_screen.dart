@@ -94,7 +94,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _refresh() async {
-    await context.read<DataProvider>().loadBoook(3);
+    var dataProvider = context.read<DataProvider>();
+    await dataProvider.loadCache();
+    await dataProvider.loadBoook(dataProvider.bookId!);
   }
 
   @override

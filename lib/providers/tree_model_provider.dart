@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:pencil_flutter/models/data_model.dart';
 import 'package:pencil_flutter/models/tree_model.dart';
 import 'package:pencil_flutter/repository/data_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DataProvider with ChangeNotifier {
   final DataRepository dataRepository;
@@ -31,13 +32,12 @@ class DataProvider with ChangeNotifier {
 
   int? _bookId;
 
-  void setBookId(int bookId) {
-    _bookId = bookId;
-    notifyListeners();
-  }
+  int? get bookId => _bookId;
 
   Future<void> loadBoook(int bookId) async {
     _bookId = bookId;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('bookId', bookId);
 
     List<Book> bookList;
     if (_bookList == null) {
@@ -200,5 +200,10 @@ class DataProvider with ChangeNotifier {
     rebuildListItems();
 
     await dataRepository.moveNode(fromNode.nodeId, toParent.id, toChildIndex);
+  }
+
+  Future<void> loadCache() async {
+    final prefs = await SharedPreferences.getInstance();
+    _bookId = prefs.getInt('bookId') ?? 3;
   }
 }
