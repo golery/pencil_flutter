@@ -5,8 +5,8 @@ import 'package:http/http.dart' as http;
 class ApiClient {
   // final String baseUrl = "https://goapi-golery.koyeb.app";
   // The following points to DNS which forwards to GCP serverless. It can be used when Koeyb is down.
-  // final String baseUrl = "https://api.golery.com";
-  final String baseUrl = "http://goapi.golery.com:8200";
+  final String baseUrl = "https://api.golery.com";
+  // final String baseUrl = "http://goapi.golery.com:8200";
 
   ApiClient();
 
