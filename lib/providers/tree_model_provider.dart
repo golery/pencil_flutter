@@ -5,9 +5,11 @@ import 'package:pencil_flutter/models/data_model.dart';
 import 'package:pencil_flutter/models/tree_model.dart';
 import 'package:pencil_flutter/repository/data_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:logger/logger.dart';
 
 class DataProvider with ChangeNotifier {
   final DataRepository dataRepository;
+  final Logger _logger = Logger();
 
   DataProvider({required this.dataRepository});
   bool _isLoading = false;
@@ -60,8 +62,8 @@ class DataProvider with ChangeNotifier {
 
       _regenerateListItems(_nodes, book.rootId);
     } catch (e, stackTrace) {
-      print('Error: $e');
-      print('Stack trace: $stackTrace');
+      _logger.e('Error: $e');
+      _logger.e('Stack trace: $stackTrace');
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -72,7 +74,7 @@ class DataProvider with ChangeNotifier {
       List<TreeListItem> listItems, NodeId nodeId, int level) {
     var node = _nodeIdToNode[nodeId];
     if (node == null) {
-      print('Node not found $nodeId');
+      _logger.w('Node not found $nodeId');
       return;
     }
     if (level >= 0) {
@@ -104,12 +106,12 @@ class DataProvider with ChangeNotifier {
   }
 
   void openNode(NodeId nodeId, bool open) {
-    print('Open node $nodeId $open');
+    _logger.i('Open node $nodeId $open');
     _openMap[nodeId] = open;
 
     var rootId = _book?.rootId;
     if (rootId == null) {
-      print('No root Id');
+      _logger.w('No root Id');
       return;
     }
     rebuildListItems();
@@ -140,7 +142,7 @@ class DataProvider with ChangeNotifier {
     _nodeIdToNode[newNode.id] = newNode;
     parent.children.insert(0, newNode.id);
     _openMap[nodeId] = true;
-    print('Added node ${newNode.id}');
+    _logger.i('Added node ${newNode.id}');
     rebuildListItems();
     return newNode;
   }
@@ -180,12 +182,12 @@ class DataProvider with ChangeNotifier {
     _regenerateListItems(nodes, _book!.rootId);
 
     await dataRepository.deleteNode(node.id);
-    print('Deleted node ${node.id}');
+    _logger.i('Deleted node ${node.id}');
   }
 
   updateNode(Node node) async {
     await dataRepository.updateNode(node);
-    print('Updated node $node');
+    _logger.i('Updated node $node');
   }
 
   reorder(int oldIndex, int newIndex) async {
@@ -205,5 +207,6 @@ class DataProvider with ChangeNotifier {
   Future<void> loadCache() async {
     final prefs = await SharedPreferences.getInstance();
     _bookId = prefs.getInt('bookId') ?? 3;
+    _logger.i('Loaded bookId: $_bookId');
   }
 }

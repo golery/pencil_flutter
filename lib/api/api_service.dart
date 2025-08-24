@@ -25,7 +25,7 @@ class ApiService {
   }
 
   Future<List<Book>> fetchBookList() async {
-    final response = await apiClient.getRequest('/api2/pencil/book');
+    final response = await apiClient.getRequest('/api/pencil/book');
 
     if (response.statusCode == 200) {
       final List<dynamic> jsonResponse = json.decode(response.body);
@@ -38,7 +38,7 @@ class ApiService {
   Future<List<Node>> fetchNodes(NodeId bookId) async {
     print('Fetch nodes for book');
     final response =
-        await apiClient.getRequest('/api2/pencil/book/$bookId/node');
+        await apiClient.getRequest('/api/pencil/book/$bookId/node');
     print('Done.Fetch nodes for book');
 
     if (response.statusCode == 200) {
@@ -50,7 +50,7 @@ class ApiService {
   }
 
   Future<void> updateNode(Node node) async {
-    final response = await apiClient.postRequest('/api2/pencil/update', node);
+    final response = await apiClient.postRequest('/api/pencil/update', node);
 
     if (response.statusCode == 200) {
       print('Updated node. Response: ${response.body}');
@@ -62,7 +62,7 @@ class ApiService {
 
   Future<Node> addNode(NodeId parentId, int position) async {
     final response = await apiClient.postRequest(
-        '/api2/pencil/add/$parentId?position=$position', null);
+        '/api/pencil/add/$parentId?position=$position', null);
 
     if (response.statusCode == 200) {
       print('Added node. Response: ${response.body}');
@@ -74,7 +74,7 @@ class ApiService {
 
   Future<void> deleteNode(NodeId nodeId) async {
     final response =
-        await apiClient.deleteRequest('/api2/pencil/delete/$nodeId');
+        await apiClient.deleteRequest('/api/pencil/delete/$nodeId');
 
     if (response.statusCode == 200) {
       print('Deleted node. Response: ${response.body}');
@@ -88,7 +88,7 @@ class ApiService {
       NodeId nodeId, NodeId newParentId, int newPosition) async {
     var body = {'newParentId': newParentId, 'pos': newPosition};
     final response =
-        await apiClient.postRequest('/api2/pencil/move/$nodeId', body);
+        await apiClient.postRequest('/api/pencil/move/$nodeId', body);
 
     if (response.statusCode == 200) {
       print('Moved node. Response: ${response.body}');
