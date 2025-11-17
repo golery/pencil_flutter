@@ -21,8 +21,9 @@ flutter run --release
 # ICON 
 1. Generate with https://app.recraft.ai/ with large size, background white
    Crop so that icon take all space (Android will add extra padding) and resize to 512x512
+   Resize: using Krita
 2. Copy image to C:\repos\pencil_flutter\assets\icons\launcher.png
-3. Run flutter pub run flutter_launcher_icons
+3. Run `flutter pub run flutter_launcher_icons`
 
 # EMULATOR
 1. Run LDPlayer, Settings > AdbConnection
