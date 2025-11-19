@@ -6,6 +6,8 @@ import 'package:pencil_flutter/models/tree_model.dart';
 import 'package:pencil_flutter/providers/tree_model_provider.dart';
 import 'package:pencil_flutter/ui/bottom_sheet_menu.dart';
 
+const debugTapArea = false;
+
 class DataWidget extends StatelessWidget {
   final TreeListItem listItem;
   final void Function(NodeId) onOpenNode;
@@ -91,7 +93,9 @@ class DataWidget extends StatelessWidget {
                 },
                 behavior: HitTestBehavior.opaque,
                 child: Container(
-                  color: Colors.blue.withOpacity(0.2), // Debug: shows tap area
+                  color: debugTapArea
+                      ? Colors.blue.withValues(alpha: 0.2)
+                      : null, // Debug: shows tap area
                   alignment: Alignment.centerLeft,
                   padding: EdgeInsets.only(
                       left: listItem.level * 30), // Correct visual position
