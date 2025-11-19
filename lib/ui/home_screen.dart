@@ -65,28 +65,35 @@ class _HomeScreenState extends State<HomeScreen> {
     return Column(
       children: [
         Expanded(
-          child: ReorderableListView.builder(
-            onReorder: (oldIndex, newIndex) {
-              dataProvider.reorder(oldIndex, newIndex);
-            },
-            itemCount: dataProvider.treeListItems.length,
-            itemBuilder: (context, index) {
-              return Container(
-                  key: ValueKey(dataProvider.treeListItems[index].nodeId),
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(color: Color(0xFFDADADA), width: 1.0),
+          child: ScrollConfiguration(
+            behavior: ScrollConfiguration.of(context).copyWith(
+              overscroll: false,
+            ),
+            child: ReorderableListView.builder(
+              physics: const ClampingScrollPhysics(),
+              onReorder: (oldIndex, newIndex) {
+                dataProvider.reorder(oldIndex, newIndex);
+              },
+              itemCount: dataProvider.treeListItems.length,
+              itemBuilder: (context, index) {
+                return Container(
+                    key: ValueKey(dataProvider.treeListItems[index].nodeId),
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        bottom:
+                            BorderSide(color: Color(0xFFDADADA), width: 1.0),
+                      ),
                     ),
-                  ),
-                  child: DataWidget(
-                    key: Key('${dataProvider.treeListItems[index].nodeId}'),
-                    listItem: dataProvider.treeListItems[index],
-                    treeModel: dataProvider,
-                    onOpenNode: onOpenNode,
-                    onAddNode: onAddNode,
-                    onRemoveNode: onRemoveNode,
-                  ));
-            },
+                    child: DataWidget(
+                      key: Key('${dataProvider.treeListItems[index].nodeId}'),
+                      listItem: dataProvider.treeListItems[index],
+                      treeModel: dataProvider,
+                      onOpenNode: onOpenNode,
+                      onAddNode: onAddNode,
+                      onRemoveNode: onRemoveNode,
+                    ));
+              },
+            ),
           ),
         ),
       ],
@@ -117,6 +124,9 @@ class _HomeScreenState extends State<HomeScreen> {
         } else {
           return Scaffold(
             appBar: AppBar(
+              backgroundColor: Color(0xFFDFEFD3),
+              elevation: 0,
+              scrolledUnderElevation: 0,
               title: TextButton(
                 onPressed: handleSelectBook,
                 child: Row(children: [
