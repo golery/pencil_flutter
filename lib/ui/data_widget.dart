@@ -6,6 +6,7 @@ import 'package:pencil_flutter/models/tree_model.dart';
 import 'package:pencil_flutter/providers/tree_model_provider.dart';
 import 'package:pencil_flutter/ui/bottom_sheet_menu.dart';
 
+// show background to debug tap area
 const debugTapArea = false;
 
 class DataWidget extends StatelessWidget {
