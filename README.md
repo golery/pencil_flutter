@@ -9,6 +9,18 @@ adb connect 192.168.4.90:port
 adb devices
 Hint: Turn on USB debug - it helps to keep conneciton even if screen is locked
 
+## Work Profile Issue
+When using `adb connect` to connect to devices with work profiles, Flutter may install apps to the work profile instead of the main user profile. To prevent this:
+
+**Option 1: Use helper scripts (recommended)**
+- PowerShell: `.\run.ps1` or `.\run.ps1 --release`
+- Batch file: `run.bat` or `run.bat --release`
+
+**Option 2: Use Flutter flag directly**
+- `flutter run --device-user 0` (installs to main user profile)
+- `flutter run --release --device-user 0` (for release builds)
+
+The `--device-user 0` flag tells Flutter/ADB to install to the main user profile (user 0) instead of the work profile.
 
 # DEV
 Set IS_WIDGET_DEV = false in main.dart
