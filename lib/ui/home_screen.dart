@@ -7,6 +7,7 @@ import 'package:pencil_flutter/providers/tree_model_provider.dart';
 import 'package:pencil_flutter/ui/data_widget.dart';
 import 'package:pencil_flutter/ui/node_viewer.dart';
 import 'package:pencil_flutter/ui/select_book_screen.dart';
+import 'package:pencil_flutter/utils/constants.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -124,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
         } else {
           return Scaffold(
             appBar: AppBar(
-              backgroundColor: Color(0xFFDFEFD3),
+              backgroundColor: colorGreen,
               elevation: 0,
               scrolledUnderElevation: 0,
               title: TextButton(
@@ -146,6 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
             backgroundColor: Colors.white,
             body: getBody(dataProvider),
             floatingActionButton: FloatingActionButton(
+              backgroundColor: colorGreen,
               onPressed: () {
                 // Add your onPressed logic here
               },
