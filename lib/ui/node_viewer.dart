@@ -5,6 +5,50 @@ import 'package:pencil_flutter/providers/tree_model_provider.dart';
 import 'package:pencil_flutter/ui/editor_webview.dart';
 import 'package:provider/provider.dart';
 
+// Custom badge widget for tags
+class _TagBadge extends StatelessWidget {
+  final String tag;
+  final VoidCallback onDelete;
+
+  const _TagBadge({
+    required this.tag,
+    required this.onDelete,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.primaryContainer,
+        borderRadius: BorderRadius.circular(16.0),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            tag,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
+              fontSize: 13.0,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(width: 6.0),
+          GestureDetector(
+            onTap: onDelete,
+            child: Icon(
+              Icons.close,
+              size: 16.0,
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class NodeViewer extends StatefulWidget {
   final Node node;
   // After a new node is added, nodeview is opened in edit mode
@@ -136,70 +180,54 @@ class NodeViewerState extends State<NodeViewer> {
             child: _editorWebView?.getWebViewWidget(),
           ),
           // Tags section at the bottom
-          Container(
+          Padding(
             padding: const EdgeInsets.all(16.0),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              border: Border(
-                top: BorderSide(
-                  color: Theme.of(context).dividerColor,
-                  width: 1.0,
-                ),
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
+            child: Wrap(
+              spacing: 8.0,
+              runSpacing: 8.0,
+              crossAxisAlignment: WrapCrossAlignment.center,
               children: [
-                Text(
-                  'Tags',
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
+                // Display existing tags as badges
+                ...widget.node.tags.map((tag) {
+                  return _TagBadge(
+                    tag: tag,
+                    onDelete: () => _removeTag(tag),
+                  );
+                }),
+                // Add tag input inline
+                Container(
+                  constraints:
+                      const BoxConstraints(minWidth: 120, maxWidth: 200),
+                  alignment: Alignment.center,
+                  child: TextField(
+                    controller: _tagController,
+                    decoration: const InputDecoration(
+                      hintText: 'Add a tag',
+                      border: OutlineInputBorder(),
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 12.0,
+                        vertical: 8.0,
                       ),
-                ),
-                const SizedBox(height: 8.0),
-                // Display existing tags
-                if (widget.node.tags.isNotEmpty)
-                  Wrap(
-                    spacing: 8.0,
-                    runSpacing: 8.0,
-                    children: widget.node.tags.map((tag) {
-                      return Chip(
-                        label: Text(tag),
-                        onDeleted: () => _removeTag(tag),
-                        deleteIcon: const Icon(Icons.close, size: 18),
-                      );
-                    }).toList(),
+                      isDense: true,
+                    ),
+                    style: const TextStyle(fontSize: 13.0),
+                    onSubmitted: (_) => _addTag(),
                   ),
-                // Add tag input
-                const SizedBox(height: 8.0),
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: _tagController,
-                        decoration: const InputDecoration(
-                          hintText: 'Add a tag',
-                          border: OutlineInputBorder(),
-                          contentPadding: EdgeInsets.symmetric(
-                            horizontal: 12.0,
-                            vertical: 8.0,
-                          ),
-                          isDense: true,
-                        ),
-                        onSubmitted: (_) => _addTag(),
-                      ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primaryContainer,
+                    borderRadius: BorderRadius.circular(16.0),
+                  ),
+                  child: IconButton(
+                    onPressed: _addTag,
+                    icon: const Icon(Icons.add, size: 18),
+                    padding: const EdgeInsets.all(6.0),
+                    constraints: const BoxConstraints(
+                      minWidth: 28,
+                      minHeight: 28,
                     ),
-                    const SizedBox(width: 8.0),
-                    IconButton(
-                      onPressed: _addTag,
-                      icon: const Icon(Icons.add),
-                      style: IconButton.styleFrom(
-                        backgroundColor:
-                            Theme.of(context).colorScheme.primaryContainer,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ],
             ),
