@@ -56,6 +56,7 @@ class NodeViewerState extends State<NodeViewer> {
   bool _isEditing = false;
   late Node parent;
   final TextEditingController _tagController = TextEditingController();
+  final FocusNode _tagFocusNode = FocusNode();
 
   Future<void> _load() async {
     var load = await EditorWebView.load(onEditorReady: (editor) async {
@@ -82,6 +83,7 @@ class NodeViewerState extends State<NodeViewer> {
   @override
   void dispose() {
     _tagController.dispose();
+    _tagFocusNode.dispose();
     super.dispose();
   }
 
@@ -93,22 +95,41 @@ class NodeViewerState extends State<NodeViewer> {
       });
       _tagController.clear();
       _saveTags();
+      _tagFocusNode.unfocus();
     }
   }
 
   void _onTagInputChanged(String value) {
-    // If user types a space, add the tag (without the space)
-    if (value.endsWith(' ')) {
-      final tag = value.trim();
+    // Only add tag when user types a space character (not comma, dot, colon, etc.)
+    // Check if the last character is exactly a space
+    if (value.isNotEmpty && value[value.length - 1] == ' ') {
+      // Only create tag if the character before the space is alphanumeric
+      // This prevents tag creation when Android keyboard auto-inserts space after punctuation
+      if (value.length >= 2) {
+        final charBeforeSpace = value[value.length - 2];
+        final isWordChar = RegExp(r'[a-zA-Z0-9]').hasMatch(charBeforeSpace);
+
+        if (!isWordChar) {
+          // Space is preceded by punctuation, don't create tag
+          return;
+        }
+      }
+
+      // Get the tag text before the space (don't trim, as it might remove valid characters)
+      final tag = value.substring(0, value.length - 1);
       if (tag.isNotEmpty && !widget.node.tags.contains(tag)) {
         setState(() {
           widget.node.tags.add(tag);
         });
         _tagController.clear();
         _saveTags();
+        // Remove focus from the input field
+        _tagFocusNode.unfocus();
       } else {
         // Clear the input if tag already exists or is empty
         _tagController.clear();
+        // Remove focus from the input field
+        _tagFocusNode.unfocus();
       }
     }
   }
@@ -319,6 +340,7 @@ class NodeViewerState extends State<NodeViewer> {
                             padding: const EdgeInsets.only(left: 8.0),
                             child: TextField(
                               controller: _tagController,
+                              focusNode: _tagFocusNode,
                               decoration: const InputDecoration(
                                 hintText: 'Add a tag',
                                 hintStyle: TextStyle(color: Colors.grey),
@@ -331,7 +353,10 @@ class NodeViewerState extends State<NodeViewer> {
                               ),
                               style: const TextStyle(fontSize: 13.0),
                               onChanged: _onTagInputChanged,
-                              onSubmitted: (_) => _addTag(),
+                              onSubmitted: (_) {
+                                _addTag();
+                                _tagFocusNode.unfocus();
+                              },
                             ),
                           );
                         },
