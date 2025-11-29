@@ -231,7 +231,23 @@ class NodeViewerState extends State<NodeViewer> {
         ),
         body: Column(children: [
           Expanded(
-            child: _editorWebView?.getWebViewWidget(),
+            child: Stack(
+              children: [
+                _editorWebView?.getWebViewWidget() ?? const SizedBox(),
+                // Transparent overlay that captures taps when not editing
+                if (!_isEditing)
+                  Positioned.fill(
+                    child: GestureDetector(
+                      onTap: () {
+                        toggleEditor();
+                      },
+                      child: Container(
+                        color: Colors.transparent,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
           ),
           // Tags section at the bottom
           Container(
@@ -327,10 +343,6 @@ class NodeViewerState extends State<NodeViewer> {
             ),
           ),
         ]),
-        floatingActionButton: FloatingActionButton(
-          onPressed: toggleEditor,
-          child: Icon(_isEditing ? Icons.save : Icons.edit),
-        ),
       ),
     );
   }
