@@ -60,6 +60,7 @@ class Node {
   String? text;
   String? title;
   final List<NodeId> children;
+  List<String> tags;
 
   Node({
     required this.id,
@@ -67,7 +68,8 @@ class Node {
     required this.text,
     required this.title,
     required this.children,
-  });
+    List<String>? tags,
+  }) : tags = tags ?? [];
 
   @override
   String toString() {
@@ -84,7 +86,11 @@ class Node {
           children: (json['children'] as List<dynamic>?)
                   ?.map((e) => e as int)
                   .toList() ??
-              <int>[]);
+              <int>[],
+          tags: (json['tags'] as List<dynamic>?)
+                  ?.map((e) => e as String)
+                  .toList() ??
+              <String>[]);
     } catch (e, stackTrace) {
       print('Failed to parse json: $json $e $stackTrace');
       rethrow;
@@ -98,6 +104,7 @@ class Node {
       'text': text,
       'title': title,
       'children': children,
+      'tags': tags,
     };
   }
 }

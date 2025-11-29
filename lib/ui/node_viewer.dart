@@ -21,6 +21,7 @@ class NodeViewerState extends State<NodeViewer> {
   EditorWebView? _editorWebView;
   bool _isEditing = false;
   late Node parent;
+  final TextEditingController _tagController = TextEditingController();
 
   Future<void> _load() async {
     var load = await EditorWebView.load(onEditorReady: (editor) async {
@@ -45,6 +46,35 @@ class NodeViewerState extends State<NodeViewer> {
   }
 
   @override
+  void dispose() {
+    _tagController.dispose();
+    super.dispose();
+  }
+
+  void _addTag() {
+    final tag = _tagController.text.trim();
+    if (tag.isNotEmpty && !widget.node.tags.contains(tag)) {
+      setState(() {
+        widget.node.tags.add(tag);
+      });
+      _tagController.clear();
+      _saveTags();
+    }
+  }
+
+  void _removeTag(String tag) {
+    setState(() {
+      widget.node.tags.remove(tag);
+    });
+    _saveTags();
+  }
+
+  Future<void> _saveTags() async {
+    final dataProvider = Provider.of<DataProvider>(context, listen: false);
+    await dataProvider.updateNode(widget.node);
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (_editorWebView == null) {
       return const Center(child: CircularProgressIndicator());
@@ -65,6 +95,8 @@ class NodeViewerState extends State<NodeViewer> {
           print('[EDITOR]Failed update. Node mismtach ${widget.node}');
         }
       }
+      // Save tags when closing editor
+      await _saveTags();
       _editorWebView?.setEdit(false);
 
       setState(() {
@@ -102,6 +134,75 @@ class NodeViewerState extends State<NodeViewer> {
         body: Column(children: [
           Expanded(
             child: _editorWebView?.getWebViewWidget(),
+          ),
+          // Tags section at the bottom
+          Container(
+            padding: const EdgeInsets.all(16.0),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              border: Border(
+                top: BorderSide(
+                  color: Theme.of(context).dividerColor,
+                  width: 1.0,
+                ),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Tags',
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                const SizedBox(height: 8.0),
+                // Display existing tags
+                if (widget.node.tags.isNotEmpty)
+                  Wrap(
+                    spacing: 8.0,
+                    runSpacing: 8.0,
+                    children: widget.node.tags.map((tag) {
+                      return Chip(
+                        label: Text(tag),
+                        onDeleted: () => _removeTag(tag),
+                        deleteIcon: const Icon(Icons.close, size: 18),
+                      );
+                    }).toList(),
+                  ),
+                // Add tag input
+                const SizedBox(height: 8.0),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _tagController,
+                        decoration: const InputDecoration(
+                          hintText: 'Add a tag',
+                          border: OutlineInputBorder(),
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 12.0,
+                            vertical: 8.0,
+                          ),
+                          isDense: true,
+                        ),
+                        onSubmitted: (_) => _addTag(),
+                      ),
+                    ),
+                    const SizedBox(width: 8.0),
+                    IconButton(
+                      onPressed: _addTag,
+                      icon: const Icon(Icons.add),
+                      style: IconButton.styleFrom(
+                        backgroundColor:
+                            Theme.of(context).colorScheme.primaryContainer,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ]),
         floatingActionButton: FloatingActionButton(
