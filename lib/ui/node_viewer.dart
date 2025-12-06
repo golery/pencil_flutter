@@ -103,18 +103,6 @@ class NodeViewerState extends State<NodeViewer> {
     // Only add tag when user types a space character (not comma, dot, colon, etc.)
     // Check if the last character is exactly a space
     if (value.isNotEmpty && value[value.length - 1] == ' ') {
-      // Only create tag if the character before the space is alphanumeric
-      // This prevents tag creation when Android keyboard auto-inserts space after punctuation
-      if (value.length >= 2) {
-        final charBeforeSpace = value[value.length - 2];
-        final isWordChar = RegExp(r'[a-zA-Z0-9]').hasMatch(charBeforeSpace);
-
-        if (!isWordChar) {
-          // Space is preceded by punctuation, don't create tag
-          return;
-        }
-      }
-
       // Get the tag text before the space (don't trim, as it might remove valid characters)
       final tag = value.substring(0, value.length - 1);
       if (tag.isNotEmpty && !widget.node.tags.contains(tag)) {

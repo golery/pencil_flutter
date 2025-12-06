@@ -167,7 +167,7 @@ class DataProvider with ChangeNotifier {
     return descendants;
   }
 
-  deleteNode(NodeId nodeId) async {
+  Future<void> deleteNode(NodeId nodeId) async {
     Node node = getNodeById(nodeId);
 
     // find parent of node node and remove its id from parent.children
@@ -185,12 +185,12 @@ class DataProvider with ChangeNotifier {
     _logger.i('Deleted node ${node.id}');
   }
 
-  updateNode(Node node) async {
+  Future<void> updateNode(Node node) async {
     await dataRepository.updateNode(node);
     _logger.i('Updated node $node');
   }
 
-  reorder(int oldIndex, int newIndex) async {
+  Future<void> reorder(int oldIndex, int newIndex) async {
     var fromNode = _treeListItems[oldIndex];
     var fromParent = getParentNode(fromNode.nodeId);
     fromParent.children.remove(fromNode.nodeId);

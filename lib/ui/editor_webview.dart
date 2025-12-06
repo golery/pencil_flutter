@@ -23,7 +23,7 @@ class EditorWebView {
 
   late WebViewController? _controller;
 
-  init({required Future<void> Function(EditorWebView) onEditorReady}) async {
+  Future<void> init({required Future<void> Function(EditorWebView) onEditorReady}) async {
     String htmlContent =
         await rootBundle.loadString('assets/webview/index.html');
 
@@ -51,22 +51,22 @@ class EditorWebView {
     await _controller!.loadHtmlString(htmlContent);
   }
 
-  getWebViewWidget() {
+  WebViewWidget getWebViewWidget() {
     return WebViewWidget(controller: _controller!);
   }
 
-  updateEditor(Node node, bool edit) {
+  void updateEditor(Node node, bool edit) {
     print('Update editor');
     _controller?.runJavaScript(
         "window.editor.updateEditor({ node: ${jsonEncode(node.toJson())}, edit: $edit});");
   }
 
-  getEditorContent() {
+  Future<Object>? getEditorContent() {
     return _controller
         ?.runJavaScriptReturningResult('window.editor.getEditorContent();');
   }
 
-  setEdit(bool edit) {
+  void setEdit(bool edit) {
     _controller?.runJavaScriptReturningResult('window.editor.setEdit($edit);');
   }
 }
