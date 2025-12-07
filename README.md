@@ -1,22 +1,22 @@
 # pencil_flutter
 
-A new Flutter project.
+# Dev setup
+1. From inside wsl > ubuntu.
+   Run cursor to open the IDE.
+2. From WSL connect to device directly.
+   flutter run
+   flutter run --release   
+   (add --device-user 0 to install only on main user profile)
 
-# WIFI Debug
-https://chatgpt.com/c/9bd0f808-9c15-4ca4-a50a-9182ecfe5335
+## WIFI Debug
+Settings > System > Developer options > Wireless Debugging 
 adb pair 192.168.4.90:port
 adb connect 192.168.4.90:port
 adb devices
 Hint: Turn on USB debug - it helps to keep conneciton even if screen is locked
 
 ## Work Profile Issue
-When using `adb connect` to connect to devices with work profiles, Flutter may install apps to the work profile instead of the main user profile. To prevent this:
-
-**Option 1: Use helper scripts (recommended)**
-- PowerShell: `.\run.ps1` or `.\run.ps1 --release`
-- Batch file: `run.bat` or `run.bat --release`
-
-**Option 2: Use Flutter flag directly**
+When using `adb connect` to connect to devices with work profiles, Flutter may install apps to the work profile 
 - `flutter run --device-user 0` (installs to main user profile)
 - `flutter run --release --device-user 0` (for release builds)
 
@@ -26,9 +26,6 @@ The `--device-user 0` flag tells Flutter/ADB to install to the main user profile
 Set IS_WIDGET_DEV = false in main.dart
 Or set it to true and modify the page in dev.dart
 flutter run
-
-# Install release version
-flutter run --release
 
 # ICON 
 1. Generate with https://app.recraft.ai/ with large size, background white
