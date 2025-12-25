@@ -181,6 +181,12 @@ class NodeViewerState extends State<NodeViewer> {
     );
   }
 
+  void _handleSetAsShareTarget() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Set successfully')),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_editorWebView == null) {
@@ -237,6 +243,22 @@ class NodeViewerState extends State<NodeViewer> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(_isEditing ? 'Edit' : (parent.title ?? 'Node')),
+          actions: [
+            PopupMenuButton<String>(
+              icon: const Icon(Icons.more_vert),
+              onSelected: (value) {
+                if (value == 'set_as_share_target') {
+                  _handleSetAsShareTarget();
+                }
+              },
+              itemBuilder: (BuildContext context) => [
+                const PopupMenuItem<String>(
+                  value: 'set_as_share_target',
+                  child: Text('Set as share target'),
+                ),
+              ],
+            ),
+          ],
         ),
         body: Column(children: [
           Expanded(
